@@ -3,117 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>namtip - Task</title>
+    <title>namtip - Task Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { font-family: sans-serif; background: #fafafa; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; background-size: cover; background-attachment: fixed; }
-        .header { width: 100%; max-width: 600px; background: white; padding: 15px 20px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 99; }
-        .logo { font-size: 1.2rem; font-weight: bold; font-style: italic; }
+        :root { --pink: #ffccd5; --pink-dark: #ffb3c1; --gray: #8e8e8e; --text: #262626; }
+        body { font-family: sans-serif; margin: 0; background-color: #fafafa; color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; background-size: cover; background-position: center; background-attachment: fixed; }
         
-        .container { width: 100%; max-width: 450px; padding: 20px; box-sizing: border-box; margin-bottom: 80px; }
-        
-        /* Profile */
-        .profile-card { background: white; border-radius: 15px; border: 1px solid #ddd; overflow: hidden; margin-bottom: 20px; position: relative; }
-        .cover { width: 100%; height: 100px; background: #eee; cursor: pointer; background-size: cover; background-position: center; }
-        .p-pic-box { width: 70px; height: 70px; border-radius: 50%; border: 3px solid white; background: #ccc; position: absolute; top: 65px; left: 15px; overflow: hidden; cursor: pointer; z-index: 10; }
+        /* Header */
+        .header { width: 100%; max-width: 500px; background: white; padding: 15px 20px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #efefef; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 1.3rem; font-weight: bold; font-style: italic; }
+        .nav-icons i { cursor: pointer; font-size: 1.2rem; margin-left: 15px; transition: 0.2s; }
+        .nav-icons i:hover { color: var(--pink-dark); }
+
+        .main { width: 100%; max-width: 450px; padding: 15px; box-sizing: border-box; margin-bottom: 80px; }
+
+        /* Profile Block */
+        .profile-card { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-radius: 20px; overflow: hidden; border: 1px solid #ddd; margin-bottom: 20px; position: relative; }
+        .cover { width: 100%; height: 110px; background: #eee; cursor: pointer; background-size: cover; background-position: center; border-bottom: 1px solid #eee; }
+        .p-pic-box { width: 80px; height: 80px; border-radius: 50%; border: 4px solid white; background: white; position: absolute; top: 70px; left: 20px; overflow: hidden; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .p-pic-box img { width: 100%; height: 100%; object-fit: cover; }
-        .p-info { padding: 45px 15px 15px; }
-        
-        /* Form */
-        .form-box { background: rgba(255,255,255,0.8); backdrop-filter: blur(5px); border-radius: 15px; padding: 15px; border: 1px solid #ddd; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 10px; margin: 5px 0 10px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
-        #taskTitle { border: 2px dashed #bbb; }
-        .btn-add { width: 100%; padding: 12px; background: #ffccd5; color: #555; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        
+        .p-info { padding: 55px 20px 20px; }
+        .p-name { font-weight: bold; font-size: 1.1rem; }
+        .p-tag { color: var(--gray); font-size: 0.85rem; }
+
+        /* Input Form */
+        .input-box { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        label { font-size: 0.8rem; font-weight: bold; margin-bottom: 5px; display: block; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; background: white; font-size: 1rem; }
+        #taskTitle { border: 2px dashed var(--pink-dark); }
+        .add-btn { width: 100%; padding: 14px; background: var(--pink); border: none; border-radius: 10px; color: #7d5a5a; font-weight: bold; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        .add-btn:hover { background: var(--pink-dark); }
+
         /* Task List */
-        .task-item { background: white; border: 1px solid #ddd; border-radius: 12px; padding: 12px; margin-bottom: 10px; position: relative; }
-        .badge { font-size: 0.7rem; padding: 3px 10px; border-radius: 10px; color: white; background: #888; }
-        .badge.doing { background: #f1c40f; } .badge.done { background: #2ecc71; }
-        .del-icon { position: absolute; right: 10px; top: 10px; color: #ccc; cursor: pointer; }
+        .task-card { background: white; border: 1px solid #eee; padding: 15px; border-radius: 15px; margin-bottom: 12px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+        .status-badge { font-size: 0.7rem; padding: 4px 10px; border-radius: 10px; color: white; background: #bbb; font-weight: bold; }
+        .status-done { background: #2ecc71; } .status-doing { background: #f1c40f; }
+        .del-btn { position: absolute; right: 15px; top: 15px; color: #ddd; cursor: pointer; font-size: 1.1rem; }
 
-        /* Modal */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
-        .modal-inner { background: white; padding: 20px; border-radius: 20px; width: 280px; text-align: center; }
+        /* Modal Settings */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: white; padding: 25px; border-radius: 25px; width: 300px; text-align: center; }
 
-        .footer { position: fixed; bottom: 0; width: 100%; max-width: 600px; background: white; padding: 15px; text-align: center; font-size: 0.8rem; color: #888; border-top: 1px solid #ddd; }
+        .footer { position: fixed; bottom: 0; width: 100%; max-width: 500px; background: white; padding: 15px; text-align: center; font-size: 0.8rem; color: var(--gray); border-top: 1px solid #eee; }
     </style>
 </head>
 <body>
 
 <div class="header">
     <div class="logo">namtip</div>
-    <div>
-        <i class="fas fa-paper-plane" style="margin-right:15px; cursor:pointer" onclick="sendData()"></i>
-        <i class="fas fa-pencil-alt" style="margin-right:15px; cursor:pointer" onclick="showModal('themeModal')"></i>
-        <i class="fas fa-bars" style="cursor:pointer" onclick="showModal('urlModal')"></i>
+    <div class="nav-icons">
+        <i class="fas fa-paper-plane" title="ส่งข้อมูล" onclick="sendToSheet()"></i>
+        <i class="fas fa-pencil-alt" title="ตั้งค่าธีม" onclick="openModal('themeModal')"></i>
+        <i class="fas fa-bars" title="ตั้งค่า URL" onclick="openModal('urlModal')"></i>
     </div>
 </div>
 
-<div class="container">
+<div class="main">
     <div class="profile-card">
-        <div class="cover" id="displayCover" onclick="document.getElementById('upCover').click()"></div>
-        <div class="p-pic-box" onclick="document.getElementById('upProf').click()">
-            <img id="displayProf" src="https://via.placeholder.com/150">
+        <div class="cover" id="displayCover" onclick="document.getElementById('fileCover').click()"></div>
+        <div class="p-pic-box" onclick="document.getElementById('fileProfile').click()">
+            <img id="displayProfile" src="https://via.placeholder.com/150?text=namtip">
         </div>
         <div class="p-info">
-            <strong>namtip</strong><br><small style="color:#888">@namtip.p</small>
+            <div class="p-name">namtip</div>
+            <div class="p-tag">@namtip.p</div>
         </div>
     </div>
 
-    <div class="form-box">
-        <label style="font-size:0.8rem">ชื่อหัวข้องาน (เส้นประ)</label>
-        <input type="text" id="taskTitle" placeholder="พิมพ์ชื่องาน...">
+    <div class="input-box">
+        <label>หัวข้องาน (เส้นประ)</label>
+        <input type="text" id="taskTitle" placeholder="พิมพ์ชื่อหัวข้อ...">
+        <label>สถานะงาน</label>
         <select id="taskStatus">
             <option>ยังไม่ทำ</option>
             <option>เริ่มทำ</option>
             <option>ทำแล้ว</option>
         </select>
-        <div style="display:flex; gap:10px">
-            <div style="flex:1"><small>เริ่ม</small><input type="date" id="dateS"></div>
-            <div style="flex:1"><small>เสร็จ</small><input type="date" id="dateE"></div>
+        <div style="display:flex; gap:10px;">
+            <div style="flex:1;"><label>วันที่เริ่ม</label><input type="date" id="dateS"></div>
+            <div style="flex:1;"><label>วันที่เสร็จ</label><input type="date" id="dateE"></div>
         </div>
-        <button class="btn-add" onclick="addTask()">+ เพิ่มลงตาราง</button>
+        <button class="add-btn" onclick="addTask()">+ เพิ่มลงตาราง</button>
     </div>
 
-    <div id="list"></div>
-    <div id="statusMsg" style="text-align:center; font-size:0.7rem; color:gray"></div>
+    <div id="taskList"></div>
+    <div id="syncStatus" style="text-align:center; font-size:0.7rem; color:var(--gray); margin-top:10px;"></div>
 </div>
 
-<input type="file" id="upCover" style="display:none" onchange="readImg(this, 'cover')">
-<input type="file" id="upProf" style="display:none" onchange="readImg(this, 'prof')">
-<input type="file" id="upBg" style="display:none" onchange="readImg(this, 'bg')">
+<input type="file" id="fileCover" style="display:none" onchange="processFile(this, 'cover')">
+<input type="file" id="fileProfile" style="display:none" onchange="processFile(this, 'profile')">
+<input type="file" id="fileBg" style="display:none" onchange="processFile(this, 'bg')">
 
-<div id="urlModal" class="modal" onclick="if(event.target==this)this.style.display='none'">
-    <div class="modal-inner">
-        <h4>ตั้งค่า URL</h4>
-        <input type="text" id="urlInput" placeholder="วางลิงก์ที่นี่" onchange="saveSetting()">
-        <button class="btn-add" onclick="this.parentElement.parentElement.style.display='none'">ปิด</button>
+<div id="urlModal" class="modal" onclick="if(event.target==this)closeModal()">
+    <div class="modal-content">
+        <h4>🔗 ตั้งค่า Google Sheet URL</h4>
+        <input type="text" id="urlInput" placeholder="วางลิงก์ Web App ที่นี่" onchange="saveConfig()">
+        <button class="add-btn" onclick="closeModal()">ปิดหน้าต่าง</button>
     </div>
 </div>
 
-<div id="themeModal" class="modal" onclick="if(event.target==this)this.style.display='none'">
-    <div class="modal-inner">
-        <h4>ปรับแต่ง</h4>
-        <button onclick="document.getElementById('upBg').click()" style="width:100%; padding:10px; margin-bottom:10px">อัปโหลดพื้นหลังเว็บ</button>
-        <button onclick="localStorage.clear(); location.reload();" style="width:100%; padding:10px; background:#ffccd5; border:none">รีเซ็ตทั้งหมด</button>
+<div id="themeModal" class="modal" onclick="if(event.target==this)closeModal()">
+    <div class="modal-content">
+        <h4>🎨 ปรับแต่งหน้าเว็บ</h4>
+        <button class="add-btn" style="margin-bottom:10px;" onclick="document.getElementById('fileBg').click()">เปลี่ยนรูปพื้นหลังเว็บ</button>
+        <button class="add-btn" style="background:#eee; color:#333;" onclick="clearAllData()">รีเซ็ตทุกอย่าง</button>
+        <button onclick="closeModal()" style="margin-top:15px; border:none; background:none; color:var(--gray); cursor:pointer;">ยกเลิก</button>
     </div>
 </div>
 
 <div class="footer">@Rattana Garaked</div>
 
 <script>
-    const K = "vFINAL_NAMTIP";
-    let tasks = JSON.parse(localStorage.getItem('t_'+K)) || [];
-    let scriptUrl = localStorage.getItem('u_'+K) || "";
-    let bImg = localStorage.getItem('bi_'+K) || "";
-    let pImg = localStorage.getItem('pi_'+K) || "https://via.placeholder.com/150";
-    let cImg = localStorage.getItem('ci_'+K) || "#eee";
+    const STORAGE_KEY = "vNT_ULTIMATE";
+    let myData = {
+        tasks: JSON.parse(localStorage.getItem(STORAGE_KEY + '_tasks')) || [],
+        url: localStorage.getItem(STORAGE_KEY + '_url') || "",
+        bg: localStorage.getItem(STORAGE_KEY + '_bg') || "",
+        prof: localStorage.getItem(STORAGE_KEY + '_prof') || "",
+        cov: localStorage.getItem(STORAGE_KEY + '_cov') || ""
+    };
 
-    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
 
-    function readImg(input, type) {
-        if (input.files[0]) {
-            const r = new FileReader();
-            r.onload = e => {
-                if(type==='cover') cImg = e.target.result;
-                if(type==='prof') pImg = e.target.
+    function processFile(input, mode) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const result = e.target.result;
+                if (mode === 'cover') myData.cov = result;
+                if (mode === 'profile') myData.prof = result;
+                if (mode === 'bg') myData.bg = result;
+                saveConfig();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function saveConfig() {
+        myData.url = document.getElementById('urlInput').value;
+        localStorage.setItem(STORAGE_KEY + '_tasks', JSON.stringify(myData.tasks));
+        localStorage.setItem(STORAGE_KEY + '_url', myData.url);
+        localStorage.setItem(STORAGE_KEY + '_bg', myData.bg);
+        localStorage.setItem(STORAGE_KEY + '_prof', myData.prof);
+        localStorage.setItem(STORAGE_KEY + '_cov', myData.cov);
+        renderUI();
+    }
+
+    function addTask() {
+        const title = document.getElementById('taskTitle').value;
+        const s = document.getElementById('dateS').value;
+        const e = document.getElementById('dateE').value;
+        if (!title || !s || !e) return alert("กรอกข้อมูลให้ครบก่อนนะคะคุณน้ำทิพย์");
+        
+        myData.tasks.push({ title, status: document.getElementById('taskStatus').value, s, e });
+        document.getElementById('taskTitle').value = "";
+        saveConfig();
+    }
+
+    function renderUI() {
+        // Apply Images & Colors
+        document.body.style.backgroundImage = myData.bg ? `url(${myData.bg})` : "none";
+        document.getElementById('displayProfile').src = myData.prof || "https://via.placeholder.com/150?text=namtip";
+        const coverEl = document.getElementById('displayCover');
+        if (myData.cov) coverEl.style.backgroundImage = `url(${myData.cov})`;
+        else coverEl.style.backgroundColor = "#eee";
+
+        // Render Task Cards
+        const list = document.getElementById('taskList');
+        list.innerHTML = "";
+        myData.tasks.forEach((t, i) => {
+            let sClass = t.status === 'เริ่มทำ' ? 'status-doing' : (t.status === 'ทำแล้ว' ? 'status-done' : '');
+            const dS = new Date(t.s); const dE = new Date(t.e);
+            const f = d => `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()+543}`;
+            
+            list.innerHTML += `<div class="task-card">
+                <strong>${t.title}</strong><br>
+                <div style="margin-top:8px;">
+                    <span class="status-badge ${sClass}">${t.status}</span>
+                    <small style="color:#888; margin-left:5px;">🗓️ ${f(dS)} - ${f(dE)}</small>
+                </div>
+                <i class="fas fa-trash del-btn" onclick="removeTask(${i})"></i>
+            </div>`;
+        });
+    }
+
+    function removeTask(i) { if(confirm("ลบรายการนี้ใช่ไหมคะ?")) { myData.tasks.splice(i, 1); saveConfig(); } }
+
+    async function sendToSheet() {
+        if (!myData.url) return alert("ใส่ URL ก่อนนะคะ (กดปุ่ม ☰)");
+        document.getElementById('syncStatus').innerText = "กำลังส่งข้อมูล...";
+        try {
+            await fetch(myData.url, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ taskData: myData.tasks }) });
+            document.getElementById('syncStatus').innerText = "✅ บันทึกสำเร็จแล้วค่ะ!";
+            setTimeout(() => document.getElementById('syncStatus').innerText = "", 3000);
+        } catch (e) { alert("ส่งไม่สำเร็จค่ะ"); }
+    }
+
+    function clearAllData() { if(confirm("ต้องการรีเซ็ตข้อมูลและรูปทั้งหมดไหมคะ?")) { localStorage.clear(); location.reload(); } }
+
+    document.getElementById('urlInput').value = myData.url;
+    renderUI();
+</script>
+</body>
+</html>
