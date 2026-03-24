@@ -9,100 +9,85 @@
         :root { 
             --bg-default: #fafafa; 
             --text: #262626; 
-            --pink-pastel: #ffccd5; /* สีชมพูพาสเทลใหม่ */
+            --pink-pastel: #ffccd5; 
             --pink-hover: #ffb3c1;
-            --ig-blue: #0095f6; 
-            --green: #00b894; 
-            --yellow: #f1c40f; 
             --gray: #8e8e8e; 
             --light-gray: #dbdbdb;
-            --border: rgba(255, 255, 255, 0.3);
         }
         
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg-default);
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: background 0.5s; 
+            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
+        /* Header */
         .ig-header {
             width: 100%; max-width: 600px;
             background: white; border-bottom: 1px solid #efefef;
             padding: 10px 20px; box-sizing: border-box;
             display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 100;
+            position: fixed; top: 0; z-index: 999;
         }
         .ig-logo { font-size: 1.4rem; font-weight: 700; color: var(--text); font-style: italic; }
-
-        .header-actions { display: flex; gap: 15px; align-items: center; }
-        .icon-btn { cursor: pointer; color: var(--text); font-size: 1.2rem; transition: 0.2s; }
-        .icon-btn:hover { color: var(--pink-hover); }
+        .header-actions { display: flex; gap: 15px; }
+        .icon-btn { cursor: pointer; color: var(--text); font-size: 1.2rem; }
 
         .main-content { 
             width: 100%; max-width: 480px; 
-            margin-top: 70px; margin-bottom: 80px;
+            margin-top: 80px; margin-bottom: 80px;
             padding: 0 15px; box-sizing: border-box; 
         }
 
-        /* --- Profile Block --- */
+        /* Profile Section */
         .profile-block {
-            background: rgba(255, 255, 255, 0.6); /* กึ่งโปร่งใส */
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
-            border: 1px solid var(--border); border-radius: 15px;
-            overflow: hidden; margin-bottom: 20px; position: relative;
+            border-radius: 15px; overflow: hidden; margin-bottom: 20px; position: relative;
+            border: 1px solid rgba(0,0,0,0.05);
         }
-        .cover-photo {
-            width: 100%; height: 120px; 
-            background-color: #eee; background-size: cover; background-position: center;
-            border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer;
+        .cover-photo { 
+            width: 100%; height: 120px; background-color: #eee; 
+            background-size: cover; background-position: center; cursor: pointer; 
         }
         .profile-pic-container {
             position: absolute; top: 80px; left: 20px;
             width: 80px; height: 80px;
             border-radius: 50%; border: 4px solid white;
-            background: white; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
+            background: white; overflow: hidden; cursor: pointer; z-index: 5;
         }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; }
         .profile-info { padding: 50px 20px 15px 20px; }
-        .profile-name { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+        .profile-name { font-weight: 700; font-size: 1.1rem; }
         .profile-tag { color: var(--gray); font-size: 0.85rem; }
 
-        /* --- Input Box แบบใส (Glassmorphism) --- */
+        /* Input Zone */
         .input-box { 
-            background: rgba(255, 255, 255, 0.4); /* ใสแบบโปร่งแสง */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--border); 
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
             padding: 20px; border-radius: 15px; 
             margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; 
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-        }
-        
-        #taskTitle { 
-            border: 2px dashed rgba(0,0,0,0.1); 
-            background: rgba(255, 255, 255, 0.5);
-            padding: 12px; border-radius: 8px; outline: none;
+            border: 1px solid rgba(255,255,255,0.5);
         }
         
         input, select { 
-            padding: 12px; border: 1px solid rgba(0,0,0,0.05); border-radius: 8px; 
-            font-size: 0.9rem; outline: none; background: rgba(255,255,255,0.7);
+            padding: 12px; border: 1px solid rgba(0,0,0,0.1); border-radius: 8px; 
+            font-size: 0.9rem; background: rgba(255,255,255,0.8);
+            width: 100%; box-sizing: border-box; outline: none;
         }
+        #taskTitle { border: 2px dashed rgba(0,0,0,0.1); }
 
         .date-group { display: flex; gap: 10px; }
         .input-group { flex: 1; display: flex; flex-direction: column; gap: 5px; }
-        .input-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+        .input-label { font-size: 0.8rem; font-weight: 600; }
 
-        /* ปุ่มสีชมพูพาสเทล */
         .add-btn { 
             background: var(--pink-pastel); color: #7d5a5a; border: none; 
             padding: 12px; border-radius: 8px; cursor: pointer; 
-            font-weight: 700; font-size: 0.95rem; margin-top: 5px;
-            transition: 0.3s;
+            font-weight: 700; font-size: 0.95rem; transition: 0.3s;
         }
         .add-btn:hover { background: var(--pink-hover); }
 
@@ -111,19 +96,23 @@
             border-radius: 15px; margin-bottom: 15px; position: relative; 
         }
         .status-badge { font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; color: white; font-weight: 700; }
-        .status-yet { background: var(--gray); } .status-doing { background: var(--yellow); } .status-done { background: var(--green); }
-        .delete-btn { position: absolute; right: 15px; top: 15px; color: var(--light-gray); cursor: pointer; }
+        .status-yet { background: var(--gray); } .status-doing { background: #f1c40f; } .status-done { background: #00b894; }
+        .delete-btn { position: absolute; right: 15px; top: 15px; color: #ddd; cursor: pointer; }
 
-        .theme-modal, .url-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .theme-box, .url-box { width: 300px; background: white; padding: 25px; border-radius: 20px; text-align: center; }
+        /* Modals */
+        .modal-overlay { 
+            display: none; position: fixed; inset: 0; 
+            background: rgba(0,0,0,0.5); z-index: 2000; 
+            justify-content: center; align-items: center; backdrop-filter: blur(5px); 
+        }
+        .modal-box { width: 300px; background: white; padding: 25px; border-radius: 20px; text-align: center; }
         .pastel-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
         .color-dot { width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer; border: 1px solid #eee; }
 
         .ig-footer { 
-            width: 100%; max-width: 600px;
-            background: rgba(255,255,255,0.8); border-top: 1px solid #efefef;
-            padding: 15px; position: fixed; bottom: 0; z-index: 90;
-            text-align: center; font-size: 0.8rem; color: var(--gray); font-weight: 500;
+            width: 100%; max-width: 600px; background: white; 
+            padding: 15px; position: fixed; bottom: 0; z-index: 100;
+            text-align: center; font-size: 0.8rem; color: var(--gray); border-top: 1px solid #efefef;
         }
     </style>
 </head>
@@ -132,20 +121,22 @@
 <div class="ig-header">
     <div class="ig-logo">namtip</div>
     <div class="header-actions">
-        <i class="fas fa-paper-plane icon-btn" id="sendBtn" onclick="sendToSheet()"></i>
-        <i class="fas fa-pencil-alt icon-btn" onclick="openTheme()"></i>
-        <i class="fas fa-bars icon-btn" onclick="toggleUrlConfig()"></i>
+        <i class="fas fa-paper-plane icon-btn" onclick="sendToSheet()"></i>
+        <i class="fas fa-pencil-alt icon-btn" onclick="openThemeModal()"></i>
+        <i class="fas fa-bars icon-btn" onclick="openUrlModal()"></i>
     </div>
 </div>
 
 <div class="main-content">
     <div class="profile-block">
-        <div class="cover-photo" id="coverPhoto" onclick="document.getElementById('coverUpload').click()"></div>
-        <input type="file" id="coverUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'cover')">
-        <div class="profile-pic-container" onclick="document.getElementById('profileUpload').click()">
-            <img src="" alt="Profile" class="profile-pic" id="profilePic">
+        <div class="cover-photo" id="coverPhoto" onclick="document.getElementById('inputCover').click()"></div>
+        <input type="file" id="inputCover" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'cover')">
+        
+        <div class="profile-pic-container" onclick="document.getElementById('inputProfile').click()">
+            <img src="" id="profilePic" class="profile-pic">
         </div>
-        <input type="file" id="profileUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'profile')">
+        <input type="file" id="inputProfile" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'profile')">
+        
         <div class="profile-info">
             <div class="profile-name">namtip</div>
             <div class="profile-tag">@namtip.p</div>
@@ -155,14 +146,12 @@
     <div class="input-box">
         <label class="input-label">ชื่อหัวข้องาน</label>
         <input type="text" id="taskTitle" placeholder="พิมพ์ชื่องานที่นี่...">
-        <div class="input-group">
-            <label class="input-label">สถานะ</label>
-            <select id="taskStatus">
-                <option value="ยังไม่ทำ">ยังไม่ทำ</option>
-                <option value="เริ่มทำ">เริ่มทำ</option>
-                <option value="ทำแล้ว">ทำแล้ว</option>
-            </select>
-        </div>
+        <label class="input-label">สถานะ</label>
+        <select id="taskStatus">
+            <option value="ยังไม่ทำ">ยังไม่ทำ</option>
+            <option value="เริ่มทำ">เริ่มทำ</option>
+            <option value="ทำแล้ว">ทำแล้ว</option>
+        </select>
         <div class="date-group">
             <div class="input-group">
                 <label class="input-label">เริ่มงาน</label>
@@ -173,75 +162,50 @@
                 <input type="date" id="dateEnd">
             </div>
         </div>
-        <button class="add-btn" onclick="addTask()">+ เพิ่มลงตาราง</button>
+        <button class="add-btn" onclick="addNewTask()">+ เพิ่มลงตาราง</button>
     </div>
 
     <div id="taskList"></div>
-    <p id="msg" style="text-align:center; font-size:0.8rem; color:var(--gray); height:1.2rem;"></p>
+    <p id="msg" style="text-align:center; font-size:0.8rem; color:var(--gray); height:20px;"></p>
 </div>
 
-<div id="urlModal" class="url-modal" onclick="if(event.target==this)toggleUrlConfig()">
-    <div class="url-box">
-        <h4 style="margin-top:0;">⚙️ Google Script URL</h4>
-        <input type="text" id="urlConfig" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;" placeholder="วาง URL ที่นี่..." onchange="saveURL()">
+<div id="urlModal" class="modal-overlay" onclick="if(event.target==this)closeAllModals()">
+    <div class="modal-box">
+        <h4>⚙️ ตั้งค่า Google Script URL</h4>
+        <input type="text" id="urlInput" style="margin-bottom:15px;" placeholder="วาง URL ที่นี่..." onchange="saveAppURL()">
+        <button onclick="closeAllModals()" style="width:100%; padding:10px; background:#eee; border:none; border-radius:8px; cursor:pointer;">ปิด</button>
     </div>
 </div>
 
-<div id="themeModal" class="theme-modal">
-    <div class="theme-box">
-        <div class="theme-title">🎨 ปรับแต่งธีม</div>
+<div id="themeModal" class="modal-overlay" onclick="if(event.target==this)closeAllModals()">
+    <div class="modal-box">
+        <h4>🎨 ปรับแต่งธีม</h4>
         <div class="pastel-picker">
-            <div class="color-dot" style="background:#fafafa; border:1px solid #ddd" onclick="setPastel('#fafafa')"></div>
-            <div class="color-dot" style="background:#FFEDF2" onclick="setPastel('#FFEDF2')"></div>
-            <div class="color-dot" style="background:#E6F3FF" onclick="setPastel('#E6F3FF')"></div>
-            <div class="color-dot" style="background:#EBFEEA" onclick="setPastel('#EBFEEA')"></div>
-            <div class="color-dot" style="background:#FFF9E6" onclick="setPastel('#FFF9E6')"></div>
+            <div class="color-dot" style="background:#fafafa; border:1px solid #ddd" onclick="updateBgColor('#fafafa')"></div>
+            <div class="color-dot" style="background:#FFEDF2" onclick="updateBgColor('#FFEDF2')"></div>
+            <div class="color-dot" style="background:#E6F3FF" onclick="updateBgColor('#E6F3FF')"></div>
+            <div class="color-dot" style="background:#EBFEEA" onclick="updateBgColor('#EBFEEA')"></div>
+            <div class="color-dot" style="background:#FFF9E6" onclick="updateBgColor('#FFF9E6')"></div>
         </div>
-        <button style="width:100%; padding:10px; background:white; border:2px dashed #ccc; border-radius:8px; cursor:pointer;" onclick="document.getElementById('bgUpload').click()">🖼️ อัปโหลดรูปพื้นหลัง</button>
-        <input type="file" id="bgUpload" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
-        <button style="width:100%; padding:10px; margin-top:20px; background:#eee; border:none; border-radius:8px;" onclick="resetTheme()">รีเซ็ตทั้งหมด</button>
-        <button style="width:100%; padding:10px; margin-top:5px; background:none; border:none; color:var(--gray);" onclick="closeTheme()">ปิดหน้าต่าง</button>
+        <button onclick="document.getElementById('inputBg').click()" style="width:100%; padding:10px; background:white; border:2px dashed #ccc; border-radius:8px; cursor:pointer;">🖼️ อัปโหลดพื้นหลังหน้าเว็บ</button>
+        <input type="file" id="inputBg" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
+        <button onclick="resetSystem()" style="width:100%; padding:10px; margin-top:20px; background:#ffccd5; border:none; border-radius:8px; cursor:pointer;">รีเซ็ตทุกอย่าง</button>
+        <button onclick="closeAllModals()" style="width:100%; padding:10px; margin-top:5px; background:none; border:none; color:var(--gray); cursor:pointer;">ยกเลิก</button>
     </div>
 </div>
 
 <div class="ig-footer">@Rattana Garaked</div>
 
 <script>
-    const VER = "vNAMTIP_1"; // ใช้เวอร์ชันใหม่เพื่อรีเซ็ตชื่อ
-    let tasks = JSON.parse(localStorage.getItem('tasks_'+VER)) || [];
-    let scriptURL = localStorage.getItem('url_'+VER) || "";
-    let savedBgColor = localStorage.getItem('bgColor_'+VER) || "#fafafa";
-    let savedBgImage = localStorage.getItem('bgImage_'+VER) || "";
-    let savedProfilePic = localStorage.getItem('profilePic_'+VER) || "https://via.placeholder.com/150?text=Profile";
-    let savedCoverPhoto = localStorage.getItem('coverPhoto_'+VER) || "#eee";
+    const VERSION = "vNAMTIP_V3";
+    let myTasks = JSON.parse(localStorage.getItem('tasks_'+VERSION)) || [];
+    let appUrl = localStorage.getItem('url_'+VERSION) || "";
+    let bgColor = localStorage.getItem('bgCol_'+VERSION) || "#fafafa";
+    let bgImg = localStorage.getItem('bgImg_'+VERSION) || "";
+    let profPic = localStorage.getItem('profPic_'+VERSION) || "https://via.placeholder.com/150?text=Profile";
+    let covPic = localStorage.getItem('covPic_'+VERSION) || "#eee";
 
-    function applySavedTheme() {
-        const b = document.getElementById('bodyBg');
-        if (savedBgImage) { b.style.backgroundImage = `url(${savedBgImage})`; b.style.backgroundColor = ""; }
-        else { b.style.backgroundImage = ""; b.style.backgroundColor = savedBgColor; }
-        document.getElementById('profilePic').src = savedProfilePic;
-        const cv = document.getElementById('coverPhoto');
-        if (savedCoverPhoto.startsWith('data:image')) { cv.style.backgroundImage = `url(${savedCoverPhoto})`; cv.style.backgroundColor = ""; }
-        else { cv.style.backgroundImage = ""; cv.style.backgroundColor = savedCoverPhoto; }
-        localStorage.setItem('bgColor_'+VER, savedBgColor);
-        localStorage.setItem('bgImage_'+VER, savedBgImage);
-        localStorage.setItem('profilePic_'+VER, savedProfilePic);
-        localStorage.setItem('coverPhoto_'+VER, savedCoverPhoto);
-    }
-
-    function openTheme() { document.getElementById('themeModal').style.display = 'flex'; }
-    function closeTheme() { document.getElementById('themeModal').style.display = 'none'; }
-    function toggleUrlConfig() { const m = document.getElementById('urlModal'); m.style.display = m.style.display === 'flex' ? 'none' : 'flex'; }
-    function setPastel(c) { savedBgImage = ""; savedBgColor = c; applySavedTheme(); }
-    function saveURL() { scriptURL = document.getElementById('urlConfig').value; localStorage.setItem('url_'+VER, scriptURL); }
-
-    function handleBgUpload(i) { if (i.files && i.files[0]) { const r = new FileReader(); r.onload = e => { savedBgImage = e.target.result; applySavedTheme(); }; r.readAsDataURL(i.files[0]); } }
-    function handleImageUpload(input, type) {
-        if (input.files && input.files[0]) {
-            const r = new FileReader();
-            r.onload = e => { if(type==='profile') savedProfilePic = e.target.result; else savedCoverPhoto = e.target.result; applySavedTheme(); };
-            r.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function formatDateTh(s) { if(!s) return ""; const d = new Date(s); return `${d
+    function syncUI() {
+        const body = document.getElementById('bodyBg');
+        if (bgImg) { body.style.backgroundImage = `url(${bgImg})`; body.style.backgroundColor = ""; }
+        else { body.style.backgroundImage = "";
