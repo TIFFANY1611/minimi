@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taskstagram - น่ารักๆ</title>
+    <title>Taskstagram - น่ารักกว่าเดิม</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { 
@@ -44,7 +44,7 @@
         .main-content { 
             width: 100%; max-width: 480px; 
             margin-top: 70px; /* หลบ Header */
-            margin-bottom: 50px; /* หลบ Footer */
+            margin-bottom: 80px; /* หลบ Footer */
             padding: 0 15px; box-sizing: border-box; 
         }
 
@@ -80,10 +80,38 @@
         input, select { 
             padding: 12px; border: 1px solid var(--light-gray); border-radius: 8px; 
             font-size: 0.9rem; outline: none; background: #fafafa; transition: 0.2s;
+            box-sizing: border-box; width: 100%;
         }
         input:focus, select:focus { border-color: var(--ig-blue); background: white; }
+        
+        /* ช่องหัวข้อเส้นประ */
+        #taskTitle { 
+            border: 2px dashed var(--light-gray); 
+            background: #fff;
+        }
+        #taskTitle:focus { border-color: var(--ig-blue); }
+
         .date-group { display: flex; gap: 10px; }
         .date-group .input-group { flex: 1; }
+        
+        /* สไตล์ Date Picker */
+        input[type="date"] {
+            position: relative;
+            padding: 10px;
+        }
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+
         .add-btn { 
             background: var(--ig-blue); color: white; border: none; 
             padding: 12px; border-radius: 8px; cursor: pointer; 
@@ -117,20 +145,35 @@
         .pastel-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
         .color-dot { width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer; border: 1px solid #eee; }
         .theme-action-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; }
+        
+        /* ปุ่มอัปโหลดรูปพื้นหลัง */
+        .upload-bg-btn {
+            background: var(--light-gray); color: var(--text);
+            border: 2px dashed var(--gray);
+            margin-top: 15px;
+        }
+        .upload-bg-btn:hover { border-color: var(--ig-blue); color: var(--ig-blue); }
 
-        /* --- Settings Footer --- */
-        .settings-footer { 
+        /* --- URL Config Modal (ซ่อนหลังปุ่มสามขีด) --- */
+        .url-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 95; justify-content: center; align-items: start; padding-top: 70px; backdrop-filter: blur(5px); }
+        .url-box { width: 90%; max-width: 400px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        .url-input { 
+            width: 100%; padding: 10px; font-size: 0.8rem; 
+            border: 1px solid var(--border); border-radius: 8px; 
+            background: #fafafa; color: var(--gray); text-align: center;
+            box-sizing: border-box;
+        }
+
+        /* --- Instagram Footer (แถบชื่อ) --- */
+        .ig-footer { 
             width: 100%; max-width: 600px;
-            background: white; border-top: 1px solid var(--border);
-            padding: 8px 20px; box-sizing: border-box;
+            background: rgba(255,255,255,0.8); border-top: 1px solid var(--border);
+            padding: 15px 20px; box-sizing: border-box;
             display: flex; justify-content: center; align-items: center;
             position: fixed; bottom: 0; z-index: 90;
+            backdrop-filter: blur(5px);
         }
-        .url-input { 
-            width: 90%; padding: 6px 10px; font-size: 0.7rem; 
-            border: 1px solid var(--border); border-radius: 5px; 
-            background: #fafafa; color: var(--gray); text-align: center;
-        }
+        .footer-text { font-size: 0.8rem; color: var(--gray); font-weight: 500; }
     </style>
 </head>
 <body id="bodyBg">
@@ -140,6 +183,7 @@
     <div class="header-actions">
         <i class="fas fa-paper-plane icon-btn" id="sendBtn" title="ส่งข้อมูลเข้า Google Sheets" onclick="sendToSheet()"></i>
         <i class="fas fa-pencil-alt icon-btn" title="ปรับแต่งธีม" onclick="openTheme()"></i>
+        <i class="fas fa-bars icon-btn" title="ตั้งค่าระบบ" onclick="toggleUrlConfig()"></i>
     </div>
 </div>
 
@@ -175,12 +219,12 @@
         </div>
         <div class="date-group">
             <div class="input-group">
-                <label class="input-label">วันที่เริ่ม</label>
-                <input type="text" id="dateStart" placeholder="เช่น 24/03">
+                <label class="input-label">วันที่เริ่มงาน</label>
+                <input type="date" id="dateStart">
             </div>
             <div class="input-group">
-                <label class="input-label">วันที่เสร็จ</label>
-                <input type="text" id="dateEnd" placeholder="เช่น 26/03">
+                <label class="input-label">วันที่เสร็จงาน</label>
+                <input type="date" id="dateEnd">
             </div>
         </div>
         <button class="add-btn" onclick="addTask()">+ เพิ่มลงตาราง</button>
@@ -191,13 +235,22 @@
     <p id="msg" style="font-size: 0.8rem; color: var(--gray); margin-top: 10px; text-align: center; height: 1.2rem;"></p>
 </div>
 
-<div class="settings-footer">
-    <input type="text" id="urlConfig" class="url-input" placeholder="Google Script URL (Config)..." onchange="saveURL()">
+<div id="urlModal" class="url-modal" onclick="closeUrlConfig(event)">
+    <div class="url-box">
+        <h4 style="margin-top:0; margin-bottom:10px;">⚙️ ตั้งค่า Google Script URL</h4>
+        <input type="text" id="urlConfig" class="url-input" placeholder="วาง Web App URL ที่นี่..." onchange="saveURL()">
+        <p style="font-size:0.7rem; color:var(--gray); margin-top:10px; margin-bottom:0;">(ระบบจะจำค่านี้ไว้ถาวร)</p>
+    </div>
+</div>
+
+<div class="ig-footer">
+    <div class="footer-text">@Rattana Garaked 24 มีนาค 2569</div>
 </div>
 
 <div id="themeModal" class="theme-modal">
     <div class="theme-box">
-        <div class="theme-title">🎨 เลือกโทนสีน่ารักๆ</div>
+        <div class="theme-title">🎨 ปรับแต่งความน่ารัก</div>
+        
         <div class="pastel-picker">
             <div class="color-dot" style="background:#fafafa; border:1px solid #dbdbdb" onclick="setPastel('#fafafa')"></div>
             <div class="color-dot" style="background:#FFEDF2" onclick="setPastel('#FFEDF2')"></div>
@@ -205,33 +258,71 @@
             <div class="color-dot" style="background:#EBFEEA" onclick="setPastel('#EBFEEA')"></div>
             <div class="color-dot" style="background:#FFF9E6" onclick="setPastel('#FFF9E6')"></div>
         </div>
-        <button class="theme-action-btn" style="background:var(--light-gray); color:white;" onclick="resetTheme()">รีเซ็ตพื้นหลัง</button>
+
+        <button class="theme-action-btn upload-bg-btn" onclick="document.getElementById('bgUploadModal').click()">
+            <i class="fas fa-image"></i> อัปโหลดรูปพื้นหลัง
+        </button>
+        <input type="file" id="bgUploadModal" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
+
+        <button class="theme-action-btn" style="background:var(--light-gray); color:white; margin-top:20px;" onclick="resetTheme()">รีเซ็ตทั้งหมด</button>
         <button class="theme-action-btn" style="background:transparent; color:var(--text)" onclick="closeTheme()">ปิดหน้าต่าง</button>
     </div>
 </div>
 
 <script>
     // เวอร์ชั่นของระบบเพื่อล้างค่าเก่าถ้าจำเป็น
-    const VER = "vIG_1";
+    const VER = "vIG_2";
     let tasks = JSON.parse(localStorage.getItem('tasks_'+VER)) || [];
     let scriptURL = localStorage.getItem('url_'+VER) || "";
+    
+    // ตั้งค่าธีมเริ่มต้น
     let savedBgColor = localStorage.getItem('bgColor_'+VER) || "#fafafa";
+    let savedBgImage = localStorage.getItem('bgImage_'+VER) || ""; // เก็บ Base64 รูปพื้นหลัง
     let savedProfilePic = localStorage.getItem('profilePic_'+VER) || "https://via.placeholder.com/150?text=Profile";
-    let savedCoverPhoto = localStorage.getItem('coverPhoto_'+VER) || "#eee"; // เก็บสีหรือ Base64
+    let savedCoverPhoto = localStorage.getItem('coverPhoto_'+VER) || "#eee";
 
     // --- Initial Load ---
     document.getElementById('urlConfig').value = scriptURL;
     applySavedTheme();
     renderTasks();
 
-    // --- Theme & Image Logic ---
+    // --- URL Config Logic (ปุ่มสามขีด) ---
+    function toggleUrlConfig() {
+        const modal = document.getElementById('urlModal');
+        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    }
+    function closeUrlConfig(event) {
+        if (event.target === document.getElementById('urlModal')) {
+            toggleUrlConfig();
+        }
+    }
+    function saveURL() {
+        scriptURL = document.getElementById('urlConfig').value;
+        localStorage.setItem('url_'+VER, scriptURL);
+    }
+
+    // --- Theme & Image Logic (ปุ่มดินสอ) ---
     function openTheme() { document.getElementById('themeModal').style.display = 'flex'; }
     function closeTheme() { document.getElementById('themeModal').style.display = 'none'; }
 
     // เลือกสีพื้นหลัง
     function setPastel(color) {
+        savedBgImage = ""; // ล้างรูปพื้นหลังถ้าเลือกสี
         savedBgColor = color;
         applySavedTheme();
+    }
+
+    // อัปโหลดรูปพื้นหลัง
+    function handleBgUpload(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                savedBgColor = ""; // ล้างสีถ้าเลือกรูป
+                savedBgImage = e.target.result;
+                applySavedTheme();
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 
     // จัดการอัปโหลดรูป (โปรไฟล์/ปก)
@@ -252,10 +343,19 @@
 
     // นำการตั้งค่าธีมมาใช้
     function applySavedTheme() {
-        // พื้นหลังหลัก
-        document.getElementById('bodyBg').style.backgroundColor = savedBgColor;
+        const body = document.getElementById('bodyBg');
+        // พื้นหลังหลัก (รูปภาพชนะสี)
+        if (savedBgImage) {
+            body.style.backgroundImage = `url(${savedBgImage})`;
+            body.style.backgroundColor = "";
+        } else {
+            body.style.backgroundImage = "";
+            body.style.backgroundColor = savedBgColor;
+        }
+
         // รูปโปรไฟล์
         document.getElementById('profilePic').src = savedProfilePic;
+        
         // รูปปก
         const coverEl = document.getElementById('coverPhoto');
         if (savedCoverPhoto.startsWith('data:image')) {
@@ -268,19 +368,33 @@
         
         // บันทึกถาวร
         localStorage.setItem('bgColor_'+VER, savedBgColor);
+        localStorage.setItem('bgImage_'+VER, savedBgImage);
         localStorage.setItem('profilePic_'+VER, savedProfilePic);
         localStorage.setItem('coverPhoto_'+VER, savedCoverPhoto);
     }
 
     // รีเซ็ตธีม
     function resetTheme() {
-        savedBgColor = "#fafafa";
-        savedProfilePic = "https://via.placeholder.com/150?text=Profile";
-        savedCoverPhoto = "#eee";
-        applySavedTheme();
+        if(confirm("ต้องการรีเซ็ตการตั้งค่าธีมและรูปภาพทั้งหมดใช่ไหม?")) {
+            savedBgColor = "#fafafa";
+            savedBgImage = "";
+            savedProfilePic = "https://via.placeholder.com/150?text=Profile";
+            savedCoverPhoto = "#eee";
+            applySavedTheme();
+        }
     }
 
     // --- Task Logic (เดิม) ---
+    // ฟังก์ชันจัดรูปแบบวันที่ (dd/mm/yyyy พ.ศ.)
+    function formatDateTh(dateStr) {
+        if(!dateStr) return "";
+        const d = new Date(dateStr);
+        const day = d.getDate().toString().padStart(2, '0');
+        const month = (d.getMonth() + 1).toString().padStart(2, '0');
+        const yearTh = d.getFullYear() + 543; // เปลี่ยนเป็น พ.ศ.
+        return `${day}/${month}/${yearTh}`;
+    }
+
     function renderTasks() {
         const list = document.getElementById('taskList');
         list.innerHTML = "";
@@ -294,7 +408,7 @@
                     </div>
                     <div class="task-meta">
                         <span class="status-badge ${sClass}">${t.status}</span>
-                        <span>🗓️ ${t.start} - ${t.end}</span>
+                        <span>🗓️ ${formatDateTh(t.start)} - ${formatDateTh(t.end)}</span>
                     </div>
                 </div>
             `;
@@ -304,14 +418,19 @@
 
     function addTask() {
         const title = document.getElementById('taskTitle').value;
+        const start = document.getElementById('dateStart').value;
+        const end = document.getElementById('dateEnd').value;
         if (!title) return alert("ระบุชื่องานด้วยครับ");
+        if (!start || !end) return alert("ระบุวันที่เริ่มและเสร็จด้วยครับ");
+
         tasks.push({ 
             title, 
             status: document.getElementById('taskStatus').value, 
-            start: document.getElementById('dateStart').value, 
-            end: document.getElementById('dateEnd').value 
+            start, 
+            end 
         });
         renderTasks();
+        // ล้างค่า
         document.getElementById('taskTitle').value = "";
         document.getElementById('dateStart').value = "";
         document.getElementById('dateEnd').value = "";
@@ -324,13 +443,8 @@
         }
     }
 
-    function saveURL() {
-        scriptURL = document.getElementById('urlConfig').value;
-        localStorage.setItem('url_'+VER, scriptURL);
-    }
-
     async function sendToSheet() {
-        if (!scriptURL) return alert("กรุณาใส่ URL ที่แถบด้านล่างสุดของหน้าจอก่อนครับ");
+        if (!scriptURL) return alert("กรุณาใส่ URL ที่ปุ่มสามขีด (☰) ด้านบนก่อนครับ");
         if (tasks.length === 0) return alert("ไม่มีข้อมูลงานให้ส่งครับ");
         
         const sendBtn = document.getElementById('sendBtn');
@@ -338,7 +452,7 @@
         
         // สถานะกำลังส่ง
         sendBtn.style.color = "var(--ig-blue)";
-        msg.innerText = "正在发送ข้อมูลเข้า Google Sheets...";
+        msg.innerText = "กำลังส่งข้อมูลเข้า Google Sheets...";
         
         try {
             await fetch(scriptURL, { 
