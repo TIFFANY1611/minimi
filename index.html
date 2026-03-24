@@ -3,240 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>namtip - work-hours</title>
+    <title>namtip 🍅 work-hours</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root { 
-            --bg-default: #fafafa; --text: #262626; --ig-blue: #0095f6; 
-            --green: #00b894; --yellow: #f1c40f; --gray: #8e8e8e; 
-            --light-gray: #dbdbdb; --border: #efefef;
+            --bg: #E3F2FD; --main: #4FC3F7; --dark: #0277BD; --white: #FFFFFF;
+            --border: #efefef; --gray: #8e8e8e; --text: #262626;
         }
         
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Mitr', sans-serif; }
+
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-default); background-size: cover; background-position: center;
-            background-attachment: fixed; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+            background: var(--bg); background-size: cover; background-position: center;
+            background-attachment: fixed; min-height: 100vh; padding-top: 70px; padding-bottom: 80px;
+            position: relative; overflow-x: hidden;
         }
 
-        /* --- Header: เพิ่ม Z-index ให้สูงที่สุด --- */
-        .ig-header {
-            width: 100%; max-width: 600px; background: white; border-bottom: 1px solid var(--border);
-            padding: 10px 20px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 999999; /* ดันมาหน้าสุด */
-        }
-        .ig-logo { font-size: 1.4rem; font-weight: 700; color: var(--text); font-style: italic; }
-        .header-actions { display: flex; gap: 5px; align-items: center; }
-        
-        /* เพิ่มพื้นที่การจิ้มปุ่มให้กว้างขึ้น */
-        .icon-btn { cursor: pointer; color: var(--text); font-size: 1.2rem; padding: 10px; transition: 0.2s; position: relative; z-index: 1000000; }
-        .icon-btn:active { opacity: 0.5; transform: scale(0.9); }
-
-        .main-content { 
-            width: 100%; max-width: 480px; 
-            margin-top: 80px; /* ปรับระยะห่างให้พอดี */
-            margin-bottom: 80px; padding: 0 15px; box-sizing: border-box; position: relative; z-index: 1;
+        /* --- 🍅 Background ฝูงมะเขือเทศฟุ้งๆ --- */
+        .bg-tomatoes {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* อยู่หลังสุด */
+            pointer-events: none; opacity: 0.6; /* ปรับความจาง */
         }
 
-        /* --- Profile --- */
-        .profile-block { background: white; border: 1px solid var(--border); border-radius: 15px; overflow: hidden; margin-bottom: 20px; position: relative; }
-        .cover-photo { width: 100%; height: 120px; background-color: #eee; background-size: cover; background-position: center; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .profile-pic-container { position: absolute; top: 80px; left: 20px; width: 80px; height: 80px; border-radius: 50%; border: 4px solid white; background: white; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 10; }
-        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
-        .profile-info { padding: 50px 20px 15px 20px; }
-        .profile-name { font-weight: 700; font-size: 1.2rem; color: var(--text); text-decoration: none; display: inline-block; }
-        .profile-tag { color: var(--gray); font-size: 0.85rem; }
+        .tomato-emoji {
+            position: absolute;
+            animation: tomatoFloat infinite linear;
+            will-change: transform, opacity;
+        }
 
-        /* --- Input Zone --- */
-        .input-box { background: white; border: 1px solid var(--border); padding: 20px; border-radius: 15px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
-        .input-group { display: flex; flex-direction: column; gap: 5px; }
-        .input-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
-        input, select { padding: 12px; border: 1px solid var(--light-gray); border-radius: 8px; font-size: 1rem; width: 100%; box-sizing: border-box; background: #fafafa; }
-        #taskTitle { border: 2px dashed var(--light-gray); background: #fff; }
-        .add-btn { background: var(--ig-blue); color: white; border: none; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem; }
+        @keyframes tomatoFloat {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) translateX(20px) rotate(360deg); opacity: 0; }
+        }
 
-        /* --- Task Item --- */
-        .task-item { background: white; border: 1px solid var(--border); padding: 18px; border-radius: 15px; margin-bottom: 15px; position: relative; }
-        .task-name { font-weight: 600; font-size: 1.05rem; color: var(--text); margin-bottom: 8px; }
-        .status-badge { font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; color: white; font-weight: 700; text-transform: uppercase; }
-        .status-yet { background: var(--gray); }
-        .status-doing { background: var(--yellow); }
-        .status-done { background: var(--green); }
-        .delete-btn { position: absolute; right: 15px; top: 15px; color: var(--light-gray); cursor: pointer; padding: 5px; }
+        /* --- Header Fix (จุดที่เคยกดไม่ได้) --- */
+        .h { 
+            width: 100%; max-width: 600px; background: white; height: 60px;
+            border-bottom: 1px solid var(--border); display: flex; 
+            justify-content: space-between; align-items: center; 
+            position: fixed; top: 0; left: 50%; transform: translateX(-50%); 
+            z-index: 999999; padding: 0 20px;
+        }
+        .ig-logo { font-size: 1.4rem; font-weight: 500; font-style: italic; color: var(--text); }
+        .h-icons i { padding: 12px; cursor: pointer; font-size: 1.2rem; color: var(--text); position: relative; z-index: 1000000; }
+        .h-icons i:active { opacity: 0.5; transform: scale(0.9); }
 
-        /* --- Modal Fix --- */
-        .m { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .main { width: 100%; max-width: 480px; margin: 0 auto; padding: 15px; position: relative; z-index: 10; }
+
+        /* --- Profile Card --- */
+        .card { background: rgba(255,255,255,0.9); border-radius: 20px; border: 1px solid var(--border); padding: 15px; margin-bottom: 20px; position: relative; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .cover { width: 100%; height: 120px; background: #eee; border-radius: 15px; cursor: pointer; background-size: cover; background-position: center; }
+        .p-pic { width: 85px; height: 85px; border-radius: 50%; border: 4px solid white; background: white; position: absolute; top: 85px; left: 25px; cursor: pointer; overflow: hidden; z-index: 20; }
+        .p-pic img { width: 100%; height: 100%; object-fit: cover; }
+        .p-info { margin-top: 55px; padding: 10px; }
+        .p-name { font-weight: 500; font-size: 1.2rem; text-decoration: none; color: var(--dark); }
+        .p-tag { color: var(--gray); font-size: 0.85rem; }
+
+        /* --- Form --- */
+        label { font-size: 0.85rem; font-weight: 400; display: block; margin-bottom: 5px; color: #555; }
+        input, select { width: 100%; padding: 12px; border: 1px solid var(--main); border-radius: 12px; margin-bottom: 15px; font-size: 1rem; background: var(--white); }
+        #taskTitle { border: 2px dashed var(--main); }
+        .btn-add { width: 100%; padding: 15px; background: var(--main); border: none; border-radius: 15px; font-weight: 500; color: white; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(79,195,247,0.4); }
+
+        /* --- Task List --- */
+        .t-item { background: white; padding: 18px; border-radius: 18px; border: 1px solid #e0f2f1; margin-bottom: 15px; position: relative; }
+        .bdg { font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; color: white; background: var(--gray); font-weight: 400; }
+        .bdg.done { background: #00b894; }
+        .del { position: absolute; right: 15px; top: 15px; color: #ddd; cursor: pointer; padding: 5px; }
+
+        /* --- Modals --- */
+        .m { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .m-in { background: white; padding: 30px; border-radius: 25px; width: 85%; max-width: 320px; text-align: center; }
 
-        .ig-footer { width: 100%; max-width: 600px; background: rgba(255,255,255,0.8); border-top: 1px solid var(--border); padding: 15px; text-align: center; position: fixed; bottom: 0; z-index: 100; backdrop-filter: blur(5px); }
-        .footer-text { font-size: 0.8rem; color: var(--gray); }
+        .f { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; text-align: center; font-size: 0.8rem; color: var(--gray); border-top: 1px solid var(--border); z-index: 100; }
     </style>
 </head>
-<body id="bodyBg">
+<body id="bBody">
 
-<div class="ig-header">
-    <div class="ig-logo">namtip</div>
-    <div class="header-actions">
-        <i class="fas fa-paper-plane icon-btn" id="sendBtn" onclick="sendToSheet()"></i>
-        <i class="fas fa-pencil-alt icon-btn" onclick="openTheme()"></i>
-        <i class="fas fa-bars icon-btn" onclick="toggleUrlConfig()"></i>
+<div class="bg-tomatoes" id="tomatoLayer"></div>
+
+<div class="h">
+    <div class="logo">namtip</div>
+    <div class="h-icons">
+        <i class="fas fa-paper-plane" onclick="sendToSheet()"></i>
+        <i class="fas fa-pencil-alt" onclick="shM('tM')"></i>
+        <i class="fas fa-bars" onclick="shM('uM')"></i>
     </div>
 </div>
 
-<div class="main-content">
-    <div class="profile-block">
-        <div class="cover-photo" id="coverPhoto" onclick="document.getElementById('coverUpload').click()"></div>
-        <input type="file" id="coverUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'cover')">
-
-        <div class="profile-pic-container" onclick="document.getElementById('profileUpload').click()">
-            <img src="https://via.placeholder.com/150?text=namtip" class="profile-pic" id="profilePic">
+<div class="main">
+    <div class="card" style="padding:0; overflow:hidden;">
+        <div class="cover" id="dCov" onclick="document.getElementById('iCov').click()"></div>
+        <div class="p-pic" onclick="document.getElementById('iProf').click()">
+            <img id="dProf" src="https://via.placeholder.com/150?text=namtip">
         </div>
-        <input type="file" id="profileUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'profile')">
-
-        <div class="profile-info">
-            <a href="https://ksm-bb.github.io/work-hours/" class="profile-name">work-hours</a><br>
-            <div class="profile-tag">@namtip.p</div>
+        <div class="p-info">
+            <div style="padding:15px">
+                <a href="https://ksm-bb.github.io/work-hours/" class="p-name">work-hours</a><br>
+                <span class="p-tag">@namtip.p</span>
+            </div>
         </div>
     </div>
 
-    <div class="input-box">
-        <div class="input-group">
-            <label class="input-label">ชื่อหัวข้องาน</label>
-            <input type="text" id="taskTitle" placeholder="พิมพ์งานที่นี่...">
-        </div>
-        <div class="input-group">
-            <label class="input-label">สถานะงาน</label>
-            <select id="taskStatus">
-                <option>ยังไม่ทำ</option>
-                <option>เริ่มทำ</option>
-                <option>ทำแล้ว</option>
-            </select>
-        </div>
+    <div class="card">
+        <label>ชื่อหัวข้องาน 🍅</label>
+        <input type="text" id="taskTitle" placeholder="พิมพ์ชื่อหัวข้องาน...">
+        <label>สถานะ</label>
+        <select id="taskStatus">
+            <option>ยังไม่ทำ</option>
+            <option>เริ่มทำ</option>
+            <option>ทำแล้ว</option>
+        </select>
         <div style="display:flex; gap:10px">
-            <div class="input-group" style="flex:1"><label class="input-label">เริ่ม</label><input type="date" id="dateStart"></div>
-            <div class="input-group" style="flex:1"><label class="input-label">เสร็จ</label><input type="date" id="dateEnd"></div>
+            <div style="flex:1;"><label>เริ่ม</label><input type="date" id="dS"></div>
+            <div style="flex:1;"><label>เสร็จ</label><input type="date" id="dE"></div>
         </div>
-        <button class="add-btn" onclick="addTask()">+ เพิ่มลงตาราง</button>
+        <button class="btn-add" onclick="addTask()">+ เพิ่มลงตาราง</button>
     </div>
 
-    <div id="taskList"></div>
-    <p id="msg" style="text-align:center; color:var(--ig-blue); font-size:0.8rem; min-height:1.2rem;"></p>
+    <div id="tList"></div>
+    <p id="msg" style="text-align:center; color:var(--dark); font-size:0.8rem; height:20px; margin-top:10px;"></p>
 </div>
 
-<div id="urlModal" class="m" onclick="if(event.target==this)this.style.display='none'">
+<input type="file" id="iCov" style="display:none" onchange="upF(this, 'c')">
+<input type="file" id="iProf" style="display:none" onchange="upF(this, 'p')">
+<input type="file" id="iBg" style="display:none" onchange="upF(this, 'b')">
+
+<div id="uM" class="m" onclick="if(event.target==this)clM()">
     <div class="m-in">
-        <h4>⚙️ ตั้งค่าระบบ</h4>
-        <input type="text" id="urlConfig" placeholder="วาง Web App URL..." onchange="saveURL()" style="text-align:center;">
-        <button class="add-btn" style="margin-top:15px; width:100%;" onclick="document.getElementById('urlModal').style.display='none'">บันทึก</button>
+        <h4>⚙️ ตั้งค่าลิงก์</h4>
+        <input type="text" id="uIn" placeholder="วาง Web App URL..." style="text-align:center;">
+        <button class="btn-add" onclick="svU()">บันทึก</button>
     </div>
 </div>
 
-<div id="themeModal" class="m" onclick="if(event.target==this)this.style.display='none'">
+<div id="tM" class="m" onclick="if(event.target==this)clM()">
     <div class="m-in">
-        <h4>🎨 ปรับแต่งธีม</h4>
-        <button class="add-btn" style="background:var(--light-gray); color:var(--text); margin-bottom:10px; width:100%;" onclick="document.getElementById('bgUploadModal').click()">เปลี่ยนรูปพื้นหลังเว็บ</button>
-        <input type="file" id="bgUploadModal" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
-        <button onclick="resetTheme()" style="background:none; border:none; color:red; cursor:pointer; margin-top:15px;">รีเซ็ตทั้งหมด</button>
+        <h4>🎨 ปรับแต่ง</h4>
+        <button class="btn-add" style="margin-bottom:10px;" onclick="document.getElementById('iBg').click()">เปลี่ยนรูปพื้นหลังเว็บ</button>
+        <button onclick="resetAll()" style="background:none; border:none; color:red; cursor:pointer; margin-top:15px;">ล้างข้อมูลทั้งหมด</button>
     </div>
 </div>
 
-<div class="ig-footer">
-    <div class="footer-text">@Rattana Garaked 2026</div>
-</div>
+<div class="f">@Rattana Garaked 2026</div>
 
 <script>
-    const VER = "vNAMTIP_ULTIMATE_V2";
-    let tasks = JSON.parse(localStorage.getItem('tasks_'+VER)) || [];
-    let scriptURL = localStorage.getItem('url_'+VER) || "";
-    let savedBgColor = localStorage.getItem('bgColor_'+VER) || "#fafafa";
-    let savedBgImage = localStorage.getItem('bgImage_'+VER) || "";
-    let savedProfilePic = localStorage.getItem('profilePic_'+VER) || "";
-    let savedCoverPhoto = localStorage.getItem('coverPhoto_'+VER) || "";
+    const K = "vNAMTIP_TOMATO_V1"; // เปลี่ยน Key ใหม่เพื่อให้ระบบดึงค่าใหม่
+    let db = {
+        tasks: JSON.parse(localStorage.getItem(K+'_t')) || [],
+        url: localStorage.getItem(K+'_u') || "",
+        bg: localStorage.getItem(K+'_b') || "",
+        pr: localStorage.getItem(K+'_p') || "",
+        cv: localStorage.getItem(K+'_c') || ""
+    };
 
-    function toggleUrlConfig() { document.getElementById('urlModal').style.display = 'flex'; }
-    function openTheme() { document.getElementById('themeModal').style.display = 'flex'; }
-    function saveURL() { scriptURL = document.getElementById('urlConfig').value; localStorage.setItem('url_'+VER, scriptURL); }
+    function shM(id) { document.getElementById(id).style.display = 'flex'; }
+    function clM() { document.querySelectorAll('.m').forEach(m => m.style.display = 'none'); }
 
-    function handleBgUpload(input) {
-        if (input.files[0]) {
-            const r = new FileReader();
-            r.onload = (e) => { savedBgImage = e.target.result; applyTheme(); };
-            r.readAsDataURL(input.files[0]);
+    // --- 🍅 ระบบสร้างฝูงมะเขือเทศลอย ---
+    function createTomatoes() {
+        const layer = document.getElementById('tomatoLayer');
+        const tomatoCount = 15; // จำนวนมะเขือเทศ
+        const colors = ['rgba(255, 100, 100, 0.7)', 'rgba(255, 150, 150, 0.8)', 'rgba(255, 50, 50, 0.6)'];
+
+        for (let i = 0; i < tomatoCount; i++) {
+            const tomato = document.createElement('div');
+            tomato.className = 'tomato-emoji';
+            tomato.innerText = '🍅';
+            
+            // สุ่มขนาด (20px - 40px)
+            const size = Math.random() * 20 + 20;
+            tomato.style.fontSize = `${size}px`;
+            
+            // สุ่มตำแหน่งเริ่มต้นตามความกว้างหน้าจอ (0% - 100%)
+            tomato.style.left = `${Math.random() * 100}%`;
+            
+            // สุ่มความเร็ว (10s - 25s)
+            tomato.style.animationDuration = `${Math.random() * 15 + 10}s`;
+            
+            // สุ่มเวลาเริ่มต้น (delay) เพื่อไม่ให้ลอยพร้อมกัน
+            tomato.style.animationDelay = `${Math.random() * 5}s`;
+
+            layer.appendChild(tomato);
         }
     }
 
-    function handleImageUpload(input, type) {
+    // เรียกใช้งานฟังก์ชันสร้างมะเขือเทศ
+    createTomatoes();
+
+    // --- ระบบหลัก ---
+    function upF(input, type) {
         if (input.files[0]) {
             const r = new FileReader();
             r.onload = (e) => {
-                if (type === 'profile') savedProfilePic = e.target.result;
-                else savedCoverPhoto = e.target.result;
-                applyTheme();
+                if(type==='c') db.cv = e.target.result;
+                if(type==='p') db.pr = e.target.result;
+                if(type==='b') db.bg = e.target.result;
+                save();
             };
             r.readAsDataURL(input.files[0]);
         }
     }
 
-    function applyTheme() {
-        const b = document.getElementById('bodyBg');
-        if (savedBgImage) b.style.backgroundImage = `url(${savedBgImage})`;
-        else b.style.backgroundColor = savedBgColor;
+    function svU() { db.url = document.getElementById('uIn').value; save(); clM(); }
 
-        if (savedProfilePic) document.getElementById('profilePic').src = savedProfilePic;
-        if (savedCoverPhoto) document.getElementById('coverPhoto').style.backgroundImage = `url(${savedCoverPhoto})`;
-
-        localStorage.setItem('bgImage_'+VER, savedBgImage);
-        localStorage.setItem('profilePic_'+VER, savedProfilePic);
-        localStorage.setItem('coverPhoto_'+VER, savedCoverPhoto);
-    }
-
-    function formatDateTh(dateStr) {
-        if(!dateStr) return "";
-        const d = new Date(dateStr);
-        return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()+543}`;
-    }
-
-    function renderTasks() {
-        const list = document.getElementById('taskList');
-        list.innerHTML = "";
-        tasks.forEach((t, i) => {
-            let sClass = t.status === 'ทำแล้ว' ? 'status-done' : (t.status === 'เริ่มทำ' ? 'status-doing' : 'status-yet');
-            list.innerHTML += `<div class="task-item">
-                <div class="task-name">${t.title}</div>
-                <span class="status-badge ${sClass}">${t.status}</span>
-                <small style="color:gray; margin-left:10px;">🗓️ ${formatDateTh(t.start)} - ${formatDateTh(t.end)}</small>
-                <i class="fas fa-trash delete-btn" onclick="deleteTask(${i})"></i>
-            </div>`;
-        });
-        localStorage.setItem('tasks_'+VER, JSON.stringify(tasks));
+    function save() {
+        localStorage.setItem(K+'_t', JSON.stringify(db.tasks));
+        localStorage.setItem(K+'_u', db.url);
+        localStorage.setItem(K+'_b', db.bg);
+        localStorage.setItem(K+'_p', db.pr);
+        localStorage.setItem(K+'_c', db.cv);
+        render();
     }
 
     function addTask() {
-        const title = document.getElementById('taskTitle').value;
-        const start = document.getElementById('dateStart').value;
-        const end = document.getElementById('dateEnd').value;
-        if (!title || !start || !end) return alert("กรอกข้อมูลให้ครบก่อนนะคะ");
-        tasks.push({ title, status: document.getElementById('taskStatus').value, start, end });
-        renderTasks();
+        const t = document.getElementById('taskTitle').value;
+        const s = document.getElementById('dS').value;
+        const e = document.getElementById('dE').value;
+        if(!t || !s || !e) return alert("กรอกข้อมูลให้ครบก่อนนะคะคุณน้ำทิพย์");
+        db.tasks.push({ title: t, status: document.getElementById('taskStatus').value, s, e });
         document.getElementById('taskTitle').value = "";
+        save();
     }
 
-    function deleteTask(i) { if(confirm("ลบงานนี้?")) { tasks.splice(i, 1); renderTasks(); } }
+    function delT(i) { if(confirm("ลบงานนี้?")) { db.tasks.splice(i, 1); save(); } }
+
+    function render() {
+        document.body.style.backgroundImage = db.bg ? `url(${db.bg})` : "none";
+        document.getElementById('dProf').src = db.pr || "https://via.placeholder.com/150?text=namtip";
+        const cv = document.getElementById('dCov');
+        if(db.cv) cv.style.backgroundImage = `url(${db.cv})`; else cv.style.backgroundColor = "#eee";
+
+        const list = document.getElementById('tList');
+        list.innerHTML = "";
+        db.tasks.forEach((item, i) => {
+            let st = item.status === 'ทำแล้ว' ? 'done' : '';
+            list.innerHTML += `<div class="t-item">
+                <div style="font-weight:500; margin-bottom:5px;">${item.title}</div>
+                <span class="bdg ${st}">${item.status}</span>
+                <small style="color:gray; margin-left:10px;">🗓️ ${item.s} - ${item.e}</small>
+                <i class="fas fa-trash del" onclick="delT(${i})"></i>
+            </div>`;
+        });
+        document.getElementById('uIn').value = db.url;
+    }
 
     async function sendToSheet() {
-        if (!scriptURL) return alert("ยังไม่ได้ใส่ URL ค่ะ");
-        document.getElementById('msg').innerText = "⏳ กำลังส่งข้อมูล...";
+        if(!db.url) return alert("ยังไม่ได้ใส่ URL ค่ะ");
+        document.getElementById('msg').innerText = "⏳ กำลังบันทึก...";
         try {
-            await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ taskData: tasks }) });
-            document.getElementById('msg').innerText = "✅ บันทึกสำเร็จแล้วค่ะ!";
+            await fetch(db.url, { method: 'POST', mode: 'no-cors', body: JSON.stringify({taskData: db.tasks}) });
+            document.getElementById('msg').innerText = "✅ สำเร็จแล้วค่ะ!";
             setTimeout(() => document.getElementById('msg').innerText = "", 3000);
-        } catch (e) { alert("ล้มเหลว"); }
+        } catch(err) { alert("ล้มเหลว"); }
     }
 
-    function resetTheme() { if(confirm("ล้างข้อมูลทั้งหมด?")) { localStorage.clear(); location.reload(); } }
+    function resetAll() { if(confirm("ล้างทั้งหมด?")) { localStorage.clear(); location.reload(); } }
 
-    document.getElementById('urlConfig').value = scriptURL;
-    applyTheme();
-    renderTasks();
+    render();
 </script>
 </body>
 </html>
