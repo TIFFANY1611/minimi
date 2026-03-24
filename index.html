@@ -3,177 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>namtip - Work Hours</title>
+    <title>namtip - work-hours</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { 
-            --bg-default: #fafafa; 
-            --text: #262626; 
-            --ig-blue: #0095f6; 
-            --green: #00b894; 
-            --yellow: #f1c40f; 
-            --gray: #8e8e8e; 
-            --light-gray: #dbdbdb;
-            --border: #efefef;
-        }
+        :root { --p: #ffccd5; --pd: #ffb3c1; --t: #262626; --g: #8e8e8e; --ib: #0095f6; }
+        body { font-family: sans-serif; margin: 0; background: #fafafa; background-size: cover; background-position: center; background-attachment: fixed; padding-bottom: 80px; }
         
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-default);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: background 0.5s; 
-        }
+        /* Header Fix */
+        .h { width: 100%; background: white; padding: 10px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; z-index: 9999; box-sizing: border-box; }
+        .logo { font-size: 1.3rem; font-weight: bold; font-style: italic; color: var(--t); }
+        .h-icons i { cursor: pointer; margin-left: 15px; font-size: 1.1rem; position: relative; z-index: 10000; }
 
-        /* --- Header --- */
-        .ig-header {
-            width: 100%; max-width: 600px;
-            background: white; border-bottom: 1px solid var(--border);
-            padding: 10px 20px; box-sizing: border-box;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 100;
-        }
-        .ig-logo { font-size: 1.4rem; font-weight: 700; color: var(--text); font-style: italic; }
-        .header-actions { display: flex; gap: 15px; align-items: center; }
-        .icon-btn { cursor: pointer; color: var(--text); font-size: 1.2rem; transition: 0.2s; }
-        .icon-btn:hover { color: var(--ig-blue); }
-
-        .main-content { 
-            width: 100%; max-width: 480px; 
-            margin-top: 70px; 
-            margin-bottom: 80px; 
-            padding: 0 15px; box-sizing: border-box; 
-        }
-
-        /* --- Profile Block --- */
-        .profile-block {
-            background: white; border: 1px solid var(--border); border-radius: 15px;
-            overflow: hidden; margin-bottom: 20px; position: relative;
-        }
-        .cover-photo {
-            width: 100%; height: 120px; 
-            background-color: #eee; background-size: cover; background-position: center;
-            border-bottom: 1px solid var(--border); cursor: pointer;
-        }
-        .profile-pic-container {
-            position: absolute; top: 80px; left: 20px;
-            width: 80px; height: 80px;
-            border-radius: 50%; border: 4px solid white;
-            background: white; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: pointer; z-index: 10;
-        }
-        .profile-pic { width: 100%; height: 100%; object-fit: cover; }
-        .profile-info { padding: 50px 20px 15px 20px; }
+        .main { max-width: 450px; margin: 70px auto 0; padding: 15px; position: relative; }
         
-        /* ลิงก์ตรงชื่อ work-hours */
-        .profile-name { font-weight: 700; font-size: 1.1rem; color: var(--text); text-decoration: none; display: inline-block; }
-        .profile-name:hover { color: var(--ig-blue); text-decoration: underline; }
-        .profile-tag { color: var(--gray); font-size: 0.85rem; margin-top: 2px; }
+        /* Profile Block */
+        .card { background: rgba(255,255,255,0.95); border-radius: 15px; border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .cover { width: 100%; height: 110px; background: #eee; border-radius: 10px; cursor: pointer; background-size: cover; background-position: center; }
+        .p-pic { width: 75px; height: 75px; border-radius: 50%; border: 3px solid white; background: #ccc; position: absolute; top: 75px; left: 25px; cursor: pointer; overflow: hidden; z-index: 5; }
+        .p-pic img { width: 100%; height: 100%; object-fit: cover; }
+        .p-info { margin-top: 45px; padding-left: 10px; }
+        .p-name { font-weight: bold; font-size: 1.1rem; text-decoration: none; color: var(--t); }
+        .p-tag { color: var(--g); font-size: 0.8rem; }
 
-        /* --- Input Box --- */
-        .input-box { 
-            background: white; border: 1px solid var(--border); padding: 20px; border-radius: 15px; 
-            margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; 
-        }
-        .input-group { display: flex; flex-direction: column; gap: 5px; }
-        .input-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
-        input, select { 
-            padding: 12px; border: 1px solid var(--light-gray); border-radius: 8px; 
-            font-size: 0.9rem; outline: none; background: #fafafa; transition: 0.2s;
-            box-sizing: border-box; width: 100%;
-        }
-        #taskTitle { border: 2px dashed var(--light-gray); background: #fff; }
-        .add-btn { background: var(--ig-blue); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; }
+        /* Input Zone */
+        label { font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 5px; color: #555; }
+        input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 10px; margin-bottom: 15px; box-sizing: border-box; font-size: 1rem; position: relative; z-index: 10; }
+        #taskTitle { border: 2px dashed var(--pd); background: #fff; }
+        .btn-add { width: 100%; padding: 14px; background: var(--p); border: none; border-radius: 10px; font-weight: bold; color: #7d5a5a; cursor: pointer; font-size: 1rem; position: relative; z-index: 20; }
+        .btn-add:active { background: var(--pd); transform: scale(0.98); }
 
-        /* --- Task List --- */
-        .task-item { background: white; border: 1px solid var(--border); padding: 18px; border-radius: 15px; margin-bottom: 15px; position: relative; }
-        .status-badge { font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; color: white; font-weight: 700; }
-        .status-yet { background: var(--gray); }
-        .status-doing { background: var(--yellow); }
-        .status-done { background: var(--green); }
-        .delete-btn { color: var(--light-gray); cursor: pointer; position: absolute; right: 15px; top: 15px; }
+        /* Task List */
+        .t-item { background: white; padding: 15px; border-radius: 12px; border: 1px solid #eee; margin-bottom: 12px; position: relative; }
+        .bdg { font-size: 0.7rem; padding: 4px 10px; border-radius: 20px; color: white; background: var(--g); font-weight: bold; }
+        .bdg.done { background: #2ecc71; }
+        .del { position: absolute; right: 15px; top: 15px; color: #ddd; cursor: pointer; z-index: 30; }
 
-        /* --- Modals --- */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .modal-box { width: 300px; background: white; padding: 25px; border-radius: 20px; text-align: center; }
+        /* Modal Fix */
+        .m { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .m-in { background: white; padding: 25px; border-radius: 20px; width: 80%; max-width: 300px; text-align: center; }
 
-        .ig-footer { width: 100%; max-width: 600px; background: rgba(255,255,255,0.8); border-top: 1px solid var(--border); padding: 15px; position: fixed; bottom: 0; text-align: center; backdrop-filter: blur(5px); }
+        .f { position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; text-align: center; font-size: 0.8rem; color: var(--g); border-top: 1px solid #eee; z-index: 9000; }
     </style>
 </head>
-<body id="bodyBg">
+<body id="bBody">
 
-<div class="ig-header">
-    <div class="ig-logo">namtip</div>
-    <div class="header-actions">
-        <i class="fas fa-paper-plane icon-btn" id="sendBtn" onclick="sendToSheet()"></i>
-        <i class="fas fa-pencil-alt icon-btn" onclick="openTheme()"></i>
-        <i class="fas fa-bars icon-btn" onclick="toggleUrlConfig()"></i>
+<div class="h">
+    <div class="logo">namtip</div>
+    <div class="h-icons">
+        <i class="fas fa-paper-plane" onclick="sendToSheet()"></i>
+        <i class="fas fa-pencil-alt" onclick="shM('tM')"></i>
+        <i class="fas fa-bars" onclick="shM('uM')"></i>
     </div>
 </div>
 
-<div class="main-content">
-    <div class="profile-block">
-        <div class="cover-photo" id="coverPhoto" onclick="document.getElementById('coverUpload').click()"></div>
-        <input type="file" id="coverUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'cover')">
-
-        <div class="profile-pic-container" onclick="document.getElementById('profileUpload').click()">
-            <img src="https://via.placeholder.com/150?text=Profile" class="profile-pic" id="profilePic">
+<div class="main">
+    <div class="card" style="padding:0; overflow:hidden;">
+        <div class="cover" id="dCov" onclick="document.getElementById('iCov').click()"></div>
+        <div class="p-pic" onclick="document.getElementById('iProf').click()">
+            <img id="dProf" src="https://via.placeholder.com/150?text=namtip">
         </div>
-        <input type="file" id="profileUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'profile')">
-
-        <div class="profile-info">
-            <a href="https://ksm-bb.github.io/work-hours/" class="profile-name">work-hours</a>
-            <div class="profile-tag">@namtip.p</div>
-        </div>
-    </div>
-
-    <div class="input-box">
-        <div class="input-group">
-            <label class="input-label">ชื่อหัวข้องาน</label>
-            <input type="text" id="taskTitle" placeholder="พิมพ์ชื่องานที่นี่...">
-        </div>
-        <div class="input-group">
-            <label class="input-label">สถานะงาน</label>
-            <select id="taskStatus">
-                <option value="ยังไม่ทำ">✧🌾 ยังไม่ทำ</option>
-                <option value="เริ่มทำ"> ∗🤎 เริ่มทำ</option>
-                <option value="ทำแล้ว">⊹🐻  ทำแล้ว</option>
-            </select>
-        </div>
-        <div style="display:flex; gap:10px;">
-            <div class="input-group" style="flex:1;">
-                <label class="input-label">วันที่เริ่ม</label>
-                <input type="date" id="dateStart">
-            </div>
-            <div class="input-group" style="flex:1;">
-                <label class="input-label">วันที่เสร็จ</label>
-                <input type="date" id="dateEnd">
+        <div class="p-info">
+            <div style="padding:15px">
+                <a href="https://ksm-bb.github.io/work-hours/" class="p-name">work-hours</a><br>
+                <span class="p-tag">@namtip.p</span>
             </div>
         </div>
-        <button class="add-btn" onclick="addTask()">+ เพิ่มลงตาราง</button>
     </div>
 
-    <div id="taskList"></div>
-    <p id="msg" style="text-align:center; font-size:0.8rem; color:var(--gray); min-height:1.2rem;"></p>
-</div>
-
-<div id="urlModal" class="modal" onclick="if(event.target==this)toggleUrlConfig()">
-    <div class="modal-box">
-        <h4>⚙️ ตั้งค่า Google Script URL</h4>
-        <input type="text" id="urlConfig" placeholder="วางลิงก์ Web App..." onchange="saveURL()" style="width:100%; margin-bottom:15px;">
-        <button class="add-btn" style="width:100%" onclick="toggleUrlConfig()">ตกลง</button>
-    </div>
-</div>
-
-<div id="themeModal" class="modal">
-    <div class="modal-box">
-        <h4 class="theme-title">🎨 ปรับแต่งความน่ารัก</h4>
-        <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:20px;">
-            <div onclick="setPastel('#fafafa')" style="background:#fafafa; height:40px; border-radius:8px; border:1px solid #ddd; cursor:pointer;"></div>
-            <div onclick="setPastel('#FFEDF2')" style="background:#FFEDF2; height:40px; border-radius:8px; cursor:pointer;"></div>
-            <div onclick="setPastel('#E6F3FF')" style="background:#E6F3FF; height:40px; border-radius:8px; cursor:pointer;"></div>
-            <div onclick="setPastel('#EBFEEA')" style="background:#EBFEEA; height:40px; border-radius:8px; cursor:pointer;"></div>
-            <div onclick="setPastel('#FFF9E6')" style="background:#FFF9E6; height:40px; border-radius:8px; cursor:pointer;"></div>
+    <div class="card">
+        <label>ชื่อหัวข้องาน (เส้นประ)</label>
+        <input type="text" id="taskTitle" placeholder="พิมพ์ชื่อหัวข้องาน...">
+        <label>สถานะ</label>
+        <select id="taskStatus">
+            <option>ยังไม่ทำ</option>
+            <option>เริ่มทำ</option>
+            <option>ทำแล้ว</option>
+        </select>
+        <div style="display:flex; gap:10px">
+            <div style="flex:1"><label>เริ่ม</label><input type="date" id="dS"></div>
+            <div style="flex:1"><label>เสร็จ</label><input type="date" id="dE"></div>
         </div>
-        <button class="add-btn" style="background:#eee; color:#333; width:100%; margin-bottom:10px;" onclick="document.getElementById('bgUploadModal').click()">อัปโหลดรูปพื้นหลัง</button>
+        <button class="btn-add" onclick="addTask()">+ เพิ่มลงตาราง</button>
+    </div>
+
+    <div id="tList"></div>
+    <div id="syncMsg" style="text-align:center; color:gray; font-size:0.8rem;"></div>
+</div>
+
+<input type="file" id="iCov" style="display:none" onchange="upF(this, 'c')">
+<input type="file" id="iProf" style="display:none" onchange="upF(this, 'p')">
+<input type="file" id="iBg" style="display:none" onchange="upF(this, 'b')">
+
+<div id="uM" class="m" onclick="if(event.target==this)clM()">
+    <div class="m-in">
+        <h4>⚙️ ตั้งค่าลิงก์</h4>
+        <input type="text" id="uIn" placeholder="วาง Web App URL..." style="margin-bottom:10px;">
+        <button class="btn-add" onclick="svU()">บันทึก</button>
+    </div>
+</div>
+
+<div id="tM" class="m" onclick="if(event.target==this)clM()">
+    <div class="m-in">
+        <h4>🎨 ปรับแต่ง</h4>
+        <button class="btn-add" style="margin-bottom:10px;" onclick="document.getElementById('iBg').click()">เปลี่ยนพื้นหลัง</button>
+        <button onclick="resetAll()" style="background:none; border:none; color:red; cursor:pointer;">ล้างข้อมูลทั้งหมด</button>
