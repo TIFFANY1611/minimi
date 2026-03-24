@@ -2,178 +2,73 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>namtip - ji</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>namtip - work-hours</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root { 
-            --bg-default: #fafafa; /* สีพื้นหลังหลักของ IG */
-            --text: #262626; 
-            --ig-blue: #0095f6; 
-            --green: #00b894; 
-            --yellow: #f1c40f; 
-            --gray: #8e8e8e; 
-            --light-gray: #dbdbdb;
-            --border: #efefef;
+            --bg-default: #fafafa; --text: #262626; --ig-blue: #0095f6; 
+            --green: #00b894; --yellow: #f1c40f; --gray: #8e8e8e; 
+            --light-gray: #dbdbdb; --border: #efefef;
         }
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-default);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; transition: background 0.5s; 
+            background-color: var(--bg-default); background-size: cover; background-position: center;
+            background-attachment: fixed; margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* --- Instagram Header --- */
+        /* --- Header: เพิ่ม Z-index ให้สูงที่สุด --- */
         .ig-header {
-            width: 100%; max-width: 600px;
-            background: white; border-bottom: 1px solid var(--border);
-            padding: 10px 20px; box-sizing: border-box;
-            display: flex; justify-content: space-between; align-items: center;
-            position: fixed; top: 0; z-index: 100;
+            width: 100%; max-width: 600px; background: white; border-bottom: 1px solid var(--border);
+            padding: 10px 20px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; z-index: 999999; /* ดันมาหน้าสุด */
         }
         .ig-logo { font-size: 1.4rem; font-weight: 700; color: var(--text); font-style: italic; }
-        .header-actions { display: flex; gap: 15px; align-items: center; }
-        .icon-btn { cursor: pointer; color: var(--text); font-size: 1.2rem; transition: 0.2s; }
-        .icon-btn:hover { color: var(--ig-blue); }
-        #sendBtn { color: var(--gray); font-size: 1.1rem; } /* ปุ่มส่งจดหมาย */
+        .header-actions { display: flex; gap: 5px; align-items: center; }
+        
+        /* เพิ่มพื้นที่การจิ้มปุ่มให้กว้างขึ้น */
+        .icon-btn { cursor: pointer; color: var(--text); font-size: 1.2rem; padding: 10px; transition: 0.2s; position: relative; z-index: 1000000; }
+        .icon-btn:active { opacity: 0.5; transform: scale(0.9); }
 
-        /* --- Main Content Area --- */
         .main-content { 
             width: 100%; max-width: 480px; 
-            margin-top: 70px; /* หลบ Header */
-            margin-bottom: 80px; /* หลบ Footer */
-            padding: 0 15px; box-sizing: border-box; 
+            margin-top: 80px; /* ปรับระยะห่างให้พอดี */
+            margin-bottom: 80px; padding: 0 15px; box-sizing: border-box; position: relative; z-index: 1;
         }
 
-        /* --- Profile & Cover Block --- */
-        .profile-block {
-            background: white; border: 1px solid var(--border); border-radius: 15px;
-            overflow: hidden; margin-bottom: 20px; position: relative;
-        }
-        .cover-photo {
-            width: 100%; height: 120px; 
-            background-color: #eee; background-size: cover; background-position: center;
-            border-bottom: 1px solid var(--border); cursor: pointer;
-        }
-        .profile-pic-container {
-            position: absolute; top: 80px; left: 20px;
-            width: 80px; height: 80px;
-            border-radius: 50%; border: 4px solid white;
-            background: white; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
+        /* --- Profile --- */
+        .profile-block { background: white; border: 1px solid var(--border); border-radius: 15px; overflow: hidden; margin-bottom: 20px; position: relative; }
+        .cover-photo { width: 100%; height: 120px; background-color: #eee; background-size: cover; background-position: center; border-bottom: 1px solid var(--border); cursor: pointer; }
+        .profile-pic-container { position: absolute; top: 80px; left: 20px; width: 80px; height: 80px; border-radius: 50%; border: 4px solid white; background: white; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); cursor: pointer; z-index: 10; }
         .profile-pic { width: 100%; height: 100%; object-fit: cover; }
         .profile-info { padding: 50px 20px 15px 20px; }
-        .profile-name { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+        .profile-name { font-weight: 700; font-size: 1.2rem; color: var(--text); text-decoration: none; display: inline-block; }
         .profile-tag { color: var(--gray); font-size: 0.85rem; }
 
-        /* --- Form Zone (เพิ่มงาน) --- */
-        .input-box { 
-            background: white; border: 1px solid var(--border); padding: 20px; border-radius: 15px; 
-            margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; 
-        }
+        /* --- Input Zone --- */
+        .input-box { background: white; border: 1px solid var(--border); padding: 20px; border-radius: 15px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
         .input-group { display: flex; flex-direction: column; gap: 5px; }
         .input-label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
-        input, select { 
-            padding: 12px; border: 1px solid var(--light-gray); border-radius: 8px; 
-            font-size: 0.9rem; outline: none; background: #fafafa; transition: 0.2s;
-            box-sizing: border-box; width: 100%;
-        }
-        input:focus, select:focus { border-color: var(--ig-blue); background: white; }
-        
-        /* ช่องหัวข้อเส้นประ */
-        #taskTitle { 
-            border: 2px dashed var(--light-gray); 
-            background: #fff;
-        }
-        #taskTitle:focus { border-color: var(--ig-blue); }
+        input, select { padding: 12px; border: 1px solid var(--light-gray); border-radius: 8px; font-size: 1rem; width: 100%; box-sizing: border-box; background: #fafafa; }
+        #taskTitle { border: 2px dashed var(--light-gray); background: #fff; }
+        .add-btn { background: var(--ig-blue); color: white; border: none; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 1rem; }
 
-        .date-group { display: flex; gap: 10px; }
-        .date-group .input-group { flex: 1; }
-        
-        /* สไตล์ Date Picker */
-        input[type="date"] {
-            position: relative;
-            padding: 10px;
-        }
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            background: transparent;
-            bottom: 0;
-            color: transparent;
-            cursor: pointer;
-            height: auto;
-            left: 0;
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: auto;
-        }
-
-        .add-btn { 
-            background: var(--ig-blue); color: white; border: none; 
-            padding: 12px; border-radius: 8px; cursor: pointer; 
-            font-weight: 600; font-size: 0.95rem; margin-top: 5px;
-        }
-
-        /* --- Task List Zone --- */
-        .task-list { margin-top: 10px; }
-        .task-item { 
-            background: white; border: 1px solid var(--border); padding: 18px; 
-            border-radius: 15px; margin-bottom: 15px; position: relative; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .task-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px; }
-        .task-name { font-weight: 600; font-size: 1.05rem; color: var(--text); max-width: 80%; }
-        .task-meta { font-size: 0.8rem; color: var(--gray); display: flex; align-items: center; gap: 10px; }
-        .status-badge { 
-            font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; 
-            color: white; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-        }
+        /* --- Task Item --- */
+        .task-item { background: white; border: 1px solid var(--border); padding: 18px; border-radius: 15px; margin-bottom: 15px; position: relative; }
+        .task-name { font-weight: 600; font-size: 1.05rem; color: var(--text); margin-bottom: 8px; }
+        .status-badge { font-size: 0.7rem; padding: 4px 12px; border-radius: 20px; color: white; font-weight: 700; text-transform: uppercase; }
         .status-yet { background: var(--gray); }
         .status-doing { background: var(--yellow); }
         .status-done { background: var(--green); }
-        .delete-btn { color: var(--light-gray); cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
-        .delete-btn:hover { color: #ff7675; }
+        .delete-btn { position: absolute; right: 15px; top: 15px; color: var(--light-gray); cursor: pointer; padding: 5px; }
 
-        /* --- Theme Modal --- */
-        .theme-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
-        .theme-box { width: 320px; background: white; padding: 25px; border-radius: 20px; text-align: center; }
-        .theme-title { font-weight: 700; margin-bottom: 20px; }
-        .pastel-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
-        .color-dot { width: 100%; aspect-ratio: 1; border-radius: 8px; cursor: pointer; border: 1px solid #eee; }
-        .theme-action-btn { width: 100%; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; margin-top: 10px; }
-        
-        /* ปุ่มอัปโหลดรูปพื้นหลัง */
-        .upload-bg-btn {
-            background: var(--light-gray); color: var(--text);
-            border: 2px dashed var(--gray);
-            margin-top: 15px;
-        }
-        .upload-bg-btn:hover { border-color: var(--ig-blue); color: var(--ig-blue); }
+        /* --- Modal Fix --- */
+        .m { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .m-in { background: white; padding: 30px; border-radius: 25px; width: 85%; max-width: 320px; text-align: center; }
 
-        /* --- URL Config Modal (ซ่อนหลังปุ่มสามขีด) --- */
-        .url-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 95; justify-content: center; align-items: start; padding-top: 70px; backdrop-filter: blur(5px); }
-        .url-box { width: 90%; max-width: 400px; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
-        .url-input { 
-            width: 100%; padding: 10px; font-size: 0.8rem; 
-            border: 1px solid var(--border); border-radius: 8px; 
-            background: #fafafa; color: var(--gray); text-align: center;
-            box-sizing: border-box;
-        }
-
-        /* --- Instagram Footer (แถบชื่อ) --- */
-        .ig-footer { 
-            width: 100%; max-width: 600px;
-            background: rgba(255,255,255,0.8); border-top: 1px solid var(--border);
-            padding: 15px 20px; box-sizing: border-box;
-            display: flex; justify-content: center; align-items: center;
-            position: fixed; bottom: 0; z-index: 90;
-            backdrop-filter: blur(5px);
-        }
-        .footer-text { font-size: 0.8rem; color: var(--gray); font-weight: 500; }
+        .ig-footer { width: 100%; max-width: 600px; background: rgba(255,255,255,0.8); border-top: 1px solid var(--border); padding: 15px; text-align: center; position: fixed; bottom: 0; z-index: 100; backdrop-filter: blur(5px); }
+        .footer-text { font-size: 0.8rem; color: var(--gray); }
     </style>
 </head>
 <body id="bodyBg">
@@ -181,25 +76,24 @@
 <div class="ig-header">
     <div class="ig-logo">namtip</div>
     <div class="header-actions">
-        <i class="fas fa-paper-plane icon-btn" id="sendBtn" title="ส่งข้อมูลเข้า Google Sheets" onclick="sendToSheet()"></i>
-        <i class="fas fa-pencil-alt icon-btn" title="ปรับแต่งธีม" onclick="openTheme()"></i>
-        <i class="fas fa-bars icon-btn" title="ตั้งค่าระบบ" onclick="toggleUrlConfig()"></i>
+        <i class="fas fa-paper-plane icon-btn" id="sendBtn" onclick="sendToSheet()"></i>
+        <i class="fas fa-pencil-alt icon-btn" onclick="openTheme()"></i>
+        <i class="fas fa-bars icon-btn" onclick="toggleUrlConfig()"></i>
     </div>
 </div>
 
 <div class="main-content">
-    
     <div class="profile-block">
-        <div class="cover-photo" id="coverPhoto" title="คลิกเพื่อเปลี่ยนรูปปก" onclick="document.getElementById('coverUpload').click()"></div>
+        <div class="cover-photo" id="coverPhoto" onclick="document.getElementById('coverUpload').click()"></div>
         <input type="file" id="coverUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'cover')">
 
-        <div class="profile-pic-container" title="คลิกเพื่อเปลี่ยนรูปโปรไฟล์" onclick="document.getElementById('profileUpload').click()">
-            <img src="https://via.placeholder.com/150?text=Profile" alt="Profile" class="profile-pic" id="profilePic">
+        <div class="profile-pic-container" onclick="document.getElementById('profileUpload').click()">
+            <img src="https://via.placeholder.com/150?text=namtip" class="profile-pic" id="profilePic">
         </div>
         <input type="file" id="profileUpload" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'profile')">
 
         <div class="profile-info">
-            <div class="profile-name">rattana</div>
+            <a href="https://ksm-bb.github.io/work-hours/" class="profile-name">work-hours</a><br>
             <div class="profile-tag">@namtip.p</div>
         </div>
     </div>
@@ -207,211 +101,111 @@
     <div class="input-box">
         <div class="input-group">
             <label class="input-label">ชื่อหัวข้องาน</label>
-            <input type="text" id="taskTitle" placeholder="เช่น ทำรายงานหน้า 1-5...">
+            <input type="text" id="taskTitle" placeholder="พิมพ์งานที่นี่...">
         </div>
         <div class="input-group">
             <label class="input-label">สถานะงาน</label>
             <select id="taskStatus">
-                <option value="ยังไม่ทำ">✧🌾 ยังไม่ทำ</option>
-                <option value="เริ่มทำ"> ∗🤎 เริ่มทำ</option>
-                <option value="ทำแล้ว">⊹🐻  ทำแล้ว</option>
+                <option>ยังไม่ทำ</option>
+                <option>เริ่มทำ</option>
+                <option>ทำแล้ว</option>
             </select>
         </div>
-        <div class="date-group">
-            <div class="input-group">
-                <label class="input-label">วันที่เริ่มงาน</label>
-                <input type="date" id="dateStart">
-            </div>
-            <div class="input-group">
-                <label class="input-label">วันที่เสร็จงาน</label>
-                <input type="date" id="dateEnd">
-            </div>
+        <div style="display:flex; gap:10px">
+            <div class="input-group" style="flex:1"><label class="input-label">เริ่ม</label><input type="date" id="dateStart"></div>
+            <div class="input-group" style="flex:1"><label class="input-label">เสร็จ</label><input type="date" id="dateEnd"></div>
         </div>
         <button class="add-btn" onclick="addTask()">+ เพิ่มลงตาราง</button>
     </div>
 
-    <div class="task-list" id="taskList"></div>
-    
-    <p id="msg" style="font-size: 0.8rem; color: var(--gray); margin-top: 10px; text-align: center; height: 1.2rem;"></p>
+    <div id="taskList"></div>
+    <p id="msg" style="text-align:center; color:var(--ig-blue); font-size:0.8rem; min-height:1.2rem;"></p>
 </div>
 
-<div id="urlModal" class="url-modal" onclick="closeUrlConfig(event)">
-    <div class="url-box">
-        <h4 style="margin-top:0; margin-bottom:10px;">⚙️ ตั้งค่า Google Script URL</h4>
-        <input type="text" id="urlConfig" class="url-input" placeholder="วาง Web App URL ที่นี่..." onchange="saveURL()">
-        <p style="font-size:0.7rem; color:var(--gray); margin-top:10px; margin-bottom:0;">(ระบบจะจำค่านี้ไว้ถาวร)</p>
+<div id="urlModal" class="m" onclick="if(event.target==this)this.style.display='none'">
+    <div class="m-in">
+        <h4>⚙️ ตั้งค่าระบบ</h4>
+        <input type="text" id="urlConfig" placeholder="วาง Web App URL..." onchange="saveURL()" style="text-align:center;">
+        <button class="add-btn" style="margin-top:15px; width:100%;" onclick="document.getElementById('urlModal').style.display='none'">บันทึก</button>
+    </div>
+</div>
+
+<div id="themeModal" class="m" onclick="if(event.target==this)this.style.display='none'">
+    <div class="m-in">
+        <h4>🎨 ปรับแต่งธีม</h4>
+        <button class="add-btn" style="background:var(--light-gray); color:var(--text); margin-bottom:10px; width:100%;" onclick="document.getElementById('bgUploadModal').click()">เปลี่ยนรูปพื้นหลังเว็บ</button>
+        <input type="file" id="bgUploadModal" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
+        <button onclick="resetTheme()" style="background:none; border:none; color:red; cursor:pointer; margin-top:15px;">รีเซ็ตทั้งหมด</button>
     </div>
 </div>
 
 <div class="ig-footer">
-    <div class="footer-text">@Rattana Garaked 24 มีนาค 2569</div>
-</div>
-
-<div id="themeModal" class="theme-modal">
-    <div class="theme-box">
-        <div class="theme-title">🎨 ปรับแต่งความน่ารัก</div>
-        
-        <div class="pastel-picker">
-            <div class="color-dot" style="background:#fafafa; border:1px solid #dbdbdb" onclick="setPastel('#fafafa')"></div>
-            <div class="color-dot" style="background:#FFEDF2" onclick="setPastel('#FFEDF2')"></div>
-            <div class="color-dot" style="background:#E6F3FF" onclick="setPastel('#E6F3FF')"></div>
-            <div class="color-dot" style="background:#EBFEEA" onclick="setPastel('#EBFEEA')"></div>
-            <div class="color-dot" style="background:#FFF9E6" onclick="setPastel('#FFF9E6')"></div>
-        </div>
-
-        <button class="theme-action-btn upload-bg-btn" onclick="document.getElementById('bgUploadModal').click()">
-            <i class="fas fa-image"></i> อัปโหลดรูปพื้นหลัง
-        </button>
-        <input type="file" id="bgUploadModal" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
-
-        <button class="theme-action-btn" style="background:var(--light-gray); color:white; margin-top:20px;" onclick="resetTheme()">รีเซ็ตทั้งหมด</button>
-        <button class="theme-action-btn" style="background:transparent; color:var(--text)" onclick="closeTheme()">ปิดหน้าต่าง</button>
-    </div>
+    <div class="footer-text">@Rattana Garaked 2026</div>
 </div>
 
 <script>
-    // เวอร์ชั่นของระบบเพื่อล้างค่าเก่าถ้าจำเป็น
-    const VER = "vIG_2";
+    const VER = "vNAMTIP_ULTIMATE_V2";
     let tasks = JSON.parse(localStorage.getItem('tasks_'+VER)) || [];
     let scriptURL = localStorage.getItem('url_'+VER) || "";
-    
-    // ตั้งค่าธีมเริ่มต้น
     let savedBgColor = localStorage.getItem('bgColor_'+VER) || "#fafafa";
-    let savedBgImage = localStorage.getItem('bgImage_'+VER) || ""; // เก็บ Base64 รูปพื้นหลัง
-    let savedProfilePic = localStorage.getItem('profilePic_'+VER) || "https://via.placeholder.com/150?text=Profile";
-    let savedCoverPhoto = localStorage.getItem('coverPhoto_'+VER) || "#eee";
+    let savedBgImage = localStorage.getItem('bgImage_'+VER) || "";
+    let savedProfilePic = localStorage.getItem('profilePic_'+VER) || "";
+    let savedCoverPhoto = localStorage.getItem('coverPhoto_'+VER) || "";
 
-    // --- Initial Load ---
-    document.getElementById('urlConfig').value = scriptURL;
-    applySavedTheme();
-    renderTasks();
-
-    // --- URL Config Logic (ปุ่มสามขีด) ---
-    function toggleUrlConfig() {
-        const modal = document.getElementById('urlModal');
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-    }
-    function closeUrlConfig(event) {
-        if (event.target === document.getElementById('urlModal')) {
-            toggleUrlConfig();
-        }
-    }
-    function saveURL() {
-        scriptURL = document.getElementById('urlConfig').value;
-        localStorage.setItem('url_'+VER, scriptURL);
-    }
-
-    // --- Theme & Image Logic (ปุ่มดินสอ) ---
+    function toggleUrlConfig() { document.getElementById('urlModal').style.display = 'flex'; }
     function openTheme() { document.getElementById('themeModal').style.display = 'flex'; }
-    function closeTheme() { document.getElementById('themeModal').style.display = 'none'; }
+    function saveURL() { scriptURL = document.getElementById('urlConfig').value; localStorage.setItem('url_'+VER, scriptURL); }
 
-    // เลือกสีพื้นหลัง
-    function setPastel(color) {
-        savedBgImage = ""; // ล้างรูปพื้นหลังถ้าเลือกสี
-        savedBgColor = color;
-        applySavedTheme();
-    }
-
-    // อัปโหลดรูปพื้นหลัง
     function handleBgUpload(input) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                savedBgColor = ""; // ล้างสีถ้าเลือกรูป
-                savedBgImage = e.target.result;
-                applySavedTheme();
-            }
-            reader.readAsDataURL(input.files[0]);
+        if (input.files[0]) {
+            const r = new FileReader();
+            r.onload = (e) => { savedBgImage = e.target.result; applyTheme(); };
+            r.readAsDataURL(input.files[0]);
         }
     }
 
-    // จัดการอัปโหลดรูป (โปรไฟล์/ปก)
     function handleImageUpload(input, type) {
-        if (input.files && input.files[0]) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                if (type === 'profile') {
-                    savedProfilePic = e.target.result;
-                } else if (type === 'cover') {
-                    savedCoverPhoto = e.target.result;
-                }
-                applySavedTheme();
-            }
-            reader.readAsDataURL(input.files[0]);
+        if (input.files[0]) {
+            const r = new FileReader();
+            r.onload = (e) => {
+                if (type === 'profile') savedProfilePic = e.target.result;
+                else savedCoverPhoto = e.target.result;
+                applyTheme();
+            };
+            r.readAsDataURL(input.files[0]);
         }
     }
 
-    // นำการตั้งค่าธีมมาใช้
-    function applySavedTheme() {
-        const body = document.getElementById('bodyBg');
-        // พื้นหลังหลัก (รูปภาพชนะสี)
-        if (savedBgImage) {
-            body.style.backgroundImage = `url(${savedBgImage})`;
-            body.style.backgroundColor = "";
-        } else {
-            body.style.backgroundImage = "";
-            body.style.backgroundColor = savedBgColor;
-        }
+    function applyTheme() {
+        const b = document.getElementById('bodyBg');
+        if (savedBgImage) b.style.backgroundImage = `url(${savedBgImage})`;
+        else b.style.backgroundColor = savedBgColor;
 
-        // รูปโปรไฟล์
-        document.getElementById('profilePic').src = savedProfilePic;
-        
-        // รูปปก
-        const coverEl = document.getElementById('coverPhoto');
-        if (savedCoverPhoto.startsWith('data:image')) {
-            coverEl.style.backgroundImage = `url(${savedCoverPhoto})`;
-            coverEl.style.backgroundColor = "";
-        } else {
-            coverEl.style.backgroundImage = "";
-            coverEl.style.backgroundColor = savedCoverPhoto;
-        }
-        
-        // บันทึกถาวร
-        localStorage.setItem('bgColor_'+VER, savedBgColor);
+        if (savedProfilePic) document.getElementById('profilePic').src = savedProfilePic;
+        if (savedCoverPhoto) document.getElementById('coverPhoto').style.backgroundImage = `url(${savedCoverPhoto})`;
+
         localStorage.setItem('bgImage_'+VER, savedBgImage);
         localStorage.setItem('profilePic_'+VER, savedProfilePic);
         localStorage.setItem('coverPhoto_'+VER, savedCoverPhoto);
     }
 
-    // รีเซ็ตธีม
-    function resetTheme() {
-        if(confirm("ต้องการรีเซ็ตการตั้งค่าธีมและรูปภาพทั้งหมดใช่ไหม?")) {
-            savedBgColor = "#fafafa";
-            savedBgImage = "";
-            savedProfilePic = "https://via.placeholder.com/150?text=Profile";
-            savedCoverPhoto = "#eee";
-            applySavedTheme();
-        }
-    }
-
-    // --- Task Logic (เดิม) ---
-    // ฟังก์ชันจัดรูปแบบวันที่ (dd/mm/yyyy พ.ศ.)
     function formatDateTh(dateStr) {
         if(!dateStr) return "";
         const d = new Date(dateStr);
-        const day = d.getDate().toString().padStart(2, '0');
-        const month = (d.getMonth() + 1).toString().padStart(2, '0');
-        const yearTh = d.getFullYear() + 543; // เปลี่ยนเป็น พ.ศ.
-        return `${day}/${month}/${yearTh}`;
+        return `${d.getDate().toString().padStart(2,'0')}/${(d.getMonth()+1).toString().padStart(2,'0')}/${d.getFullYear()+543}`;
     }
 
     function renderTasks() {
         const list = document.getElementById('taskList');
         list.innerHTML = "";
-        tasks.forEach((t, index) => {
+        tasks.forEach((t, i) => {
             let sClass = t.status === 'ทำแล้ว' ? 'status-done' : (t.status === 'เริ่มทำ' ? 'status-doing' : 'status-yet');
-            list.innerHTML += `
-                <div class="task-item">
-                    <div class="task-header">
-                        <span class="task-name">${t.title}</span>
-                        <i class="fas fa-ellipsis-h delete-btn" onclick="deleteTask(${index})" title="ลบรายการ"></i>
-                    </div>
-                    <div class="task-meta">
-                        <span class="status-badge ${sClass}">${t.status}</span>
-                        <span>🗓️ ${formatDateTh(t.start)} - ${formatDateTh(t.end)}</span>
-                    </div>
-                </div>
-            `;
+            list.innerHTML += `<div class="task-item">
+                <div class="task-name">${t.title}</div>
+                <span class="status-badge ${sClass}">${t.status}</span>
+                <small style="color:gray; margin-left:10px;">🗓️ ${formatDateTh(t.start)} - ${formatDateTh(t.end)}</small>
+                <i class="fas fa-trash delete-btn" onclick="deleteTask(${i})"></i>
+            </div>`;
         });
         localStorage.setItem('tasks_'+VER, JSON.stringify(tasks));
     }
@@ -420,59 +214,29 @@
         const title = document.getElementById('taskTitle').value;
         const start = document.getElementById('dateStart').value;
         const end = document.getElementById('dateEnd').value;
-        if (!title) return alert("ระบุชื่องานด้วยครับ");
-        if (!start || !end) return alert("ระบุวันที่เริ่มและเสร็จด้วยครับ");
-
-        tasks.push({ 
-            title, 
-            status: document.getElementById('taskStatus').value, 
-            start, 
-            end 
-        });
+        if (!title || !start || !end) return alert("กรอกข้อมูลให้ครบก่อนนะคะ");
+        tasks.push({ title, status: document.getElementById('taskStatus').value, start, end });
         renderTasks();
-        // ล้างค่า
         document.getElementById('taskTitle').value = "";
-        document.getElementById('dateStart').value = "";
-        document.getElementById('dateEnd').value = "";
     }
 
-    function deleteTask(index) {
-        if(confirm("ลบรายการงานนี้ใช่ไหม?")) {
-            tasks.splice(index, 1);
-            renderTasks();
-        }
-    }
+    function deleteTask(i) { if(confirm("ลบงานนี้?")) { tasks.splice(i, 1); renderTasks(); } }
 
     async function sendToSheet() {
-        if (!scriptURL) return alert("กรุณาใส่ URL ที่ปุ่มสามขีด (☰) ด้านบนก่อนครับ");
-        if (tasks.length === 0) return alert("ไม่มีข้อมูลงานให้ส่งครับ");
-        
-        const sendBtn = document.getElementById('sendBtn');
-        const msg = document.getElementById('msg');
-        
-        // สถานะกำลังส่ง
-        sendBtn.style.color = "var(--ig-blue)";
-        msg.innerText = "กำลังส่งข้อมูลเข้า Google Sheets...";
-        
+        if (!scriptURL) return alert("ยังไม่ได้ใส่ URL ค่ะ");
+        document.getElementById('msg').innerText = "⏳ กำลังส่งข้อมูล...";
         try {
-            await fetch(scriptURL, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify({ taskData: tasks }) 
-            });
-            msg.innerText = "✅ บันทึกสำเร็จแล้วค่ะ!";
-            sendBtn.style.color = "var(--green)";
-            setTimeout(() => { 
-                msg.innerText = ""; 
-                sendBtn.style.color = "var(--gray)";
-            }, 3000);
-        } catch (e) { 
-            alert("Error: ส่งข้อมูลไม่สำเร็จ"); 
-            msg.innerText = ""; 
-            sendBtn.style.color = "var(--gray)";
-        }
+            await fetch(scriptURL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ taskData: tasks }) });
+            document.getElementById('msg').innerText = "✅ บันทึกสำเร็จแล้วค่ะ!";
+            setTimeout(() => document.getElementById('msg').innerText = "", 3000);
+        } catch (e) { alert("ล้มเหลว"); }
     }
-</script>
 
+    function resetTheme() { if(confirm("ล้างข้อมูลทั้งหมด?")) { localStorage.clear(); location.reload(); } }
+
+    document.getElementById('urlConfig').value = scriptURL;
+    applyTheme();
+    renderTasks();
+</script>
 </body>
 </html>
